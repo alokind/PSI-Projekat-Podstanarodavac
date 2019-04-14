@@ -18,11 +18,13 @@
 				<li class="nav-item">
 					<a class="nav-link" href="prijava.html">Prijava</a>
 				</li>
-		
+				<li class="nav-item">
+					<a class="nav-link" href="ulogeVlasnika.html">Meni</a>
+				</li>
 			</ul>
 		 </nav>
-		
-		  <br/> <a href="oglasnaTabla.html">
+		 <br/>
+	 <a href="oglasnaTabla.html">
 			<img src="ot.png" alt="tabla"style="width:60px;" align="left">
 		</a>
 		 <a href="pocetna.html">
@@ -41,80 +43,53 @@
 			<tr height="350px">
 				<td colspan='2' bgcolor='white' align='center' width='50%'>
 					<br/>
-					<h3>Okačite obaveštenje na oglasnu tablu:</h3></h3>
+					<h3>Pošaljite obaveštenje/opomenu:</h3></h3>
 					<br/>
-					<form id='okaciNaOglasnuTablu'>
+					<form id='posaljiObavestenjePodstanaru'>
 						<table>
+							<tr align='center'>
+								<td>Odaberite podstanara:</td>
+								<td>
+									<select>
+										<option>Pera</option>
+										<option>Mika</option>
+										<option>Žika</option>
+									</select>
+								</td>
+							</tr>
 							
-							<tr>
-								<td>Naslov obaveštenja:</td>
-								<td><input type='text' name='naslovObav'></td>
+							<tr align='center'>
+								<br/>
+								<td>Odaberite vrstu:</td>
+								<td>
+									<select>
+										<option>Opomena</option>
+										<option>Obaveštenje</option>
+									</select>
+								</td>
 							</tr>
 							
 							<tr>
-								<td>Tekst obaveštenja:</td>
-								<td><input type='text' name='tekstObav'></td>
+								<td>Naslov obaveštenja/opomene:</td>
+								<td><input type='text' name='naslovObavOpo'></td>
+							</tr>
+							
+							<tr>
+								<td>Tekst obaveštenja/opomene:</td>
+								<td><input type='text' name='tekstObavOpo'></td>
 							</tr>
 
 							<tr align='center'>		
 								<td colspan='2'>
 								<br/>
-								<button type="button" class="btn btn-success">Potvrdi kačenje obaveštenja na oglasnu tablu</button>
-								<br/>
-								</td>
-							</tr>
-							
-							<tr>		
-								<td colspan='2'>
-								<br/>
-								</td>
-							</tr>
-						</table>
-					<hr/>
-					</form>
-				</td>				
-			</tr>
-			
-			<tr height="350px">
-				<td colspan='2' bgcolor='white' align='center' width='50%'>
-					<h3>Vidite prethodna obaveštenja i uklonite obaveštenje:</h3></h3>
-					<br/>
-					<form id='okaciNaOglasnuTablu'>
-						<table>
-							
-						<tr align='center'>		
-								<td colspan='2'>
-								<br/>
-								</td>
-							</tr>
-							
-							<tr align='center'>		
-								<td>Odaberite obaveštenje:</td>
-								<td>
-									<select>
-										<option>Sastanak stanara</option>
-										<option>Obaveštenje o isključenju struje</option>
-									</select>
-								</td>
-							</tr>
-							
-							<tr align='center'>		
-								<td colspan='2'>
-									<br/>
-									<textarea rows="4" cols="50" name="obavestenje">Ove subote ce se održati sastanak stanara. Prisustvo obavezno.</textarea>
-								</td>
-							</tr>
-							<tr align='center'>		
-								<td colspan='2'>
-								<br/>
-								<button type="button" class="btn btn-success">Obrišite odabrano obaveštenje</button>
+								<button type="button" class="btn btn-success">Potvrdi slanje obaveštenja/opomene</button>
 								</td>
 							</tr>
 						</table>
 					</form>
-				</td>	
+				</td>
+				
 			</tr>
-			
 			<tr bgcolor='#ffaa80' height="50px">
 				<td colspan='2'>&nbsp;</td>
 			</tr>

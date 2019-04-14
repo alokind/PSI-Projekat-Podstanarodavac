@@ -1,5 +1,4 @@
 <html>
-	<!--Bojana Krivokapić -->
 	<head>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 	</head>
@@ -19,31 +18,31 @@
 				<li class="nav-item">
 					<a class="nav-link" href="prijava.html">Prijava</a>
 				</li>
-				
+				<li class="nav-item">
+					<a class="nav-link" href="ulogeVlasnika.html">Meni</a>
+				</li>
 			</ul>
 		 </nav>
-		 
-		  <br/>
-		  <a href="oglasnaTabla.html">
+		 <br/> <a href="oglasnaTabla.html">
 			<img src="ot.png" alt="tabla"style="width:60px;" align="left">
 		</a>
-		 <a href="pocetna.html">
-			<img src="logout.png" alt="odjava"style="width:45px;" align="right">
+		<a href="pocetna.html">
+			<img src="logout.png" alt="odjava"style="width:50px;" align="right">
 		</a>
 		<a href="profil.html">
 			<img src="profil.png" alt="profil"style="width:45px;" align="right">
 		</a>
 		<br><br><br>
-		 <h4 align="center">Generišite ugovor o zakupu stana:</h4>
+		 <h4 align="center">Unesite račun za podstanara:</h4>
 		 <br/>
 		 <table align='center' width='40%' bgcolor='black'>
-			<tr bgcolor='#ffaa80' height="50px">
+			<tr bgcolor='ffaa80' height="50px">
 				<td colspan='2'>&nbsp;</td>
 			</tr>
 			<tr height="350px">
 				<td colspan='2' bgcolor='white' align='center' width='50%'>
 					<br/>
-					<h3>Generišite ugovor:</h3></h3>
+					<h3>Napišite račun:</h3></h3>
 					<br/>
 					<form>
 						<table>
@@ -60,9 +59,37 @@
 							
 							<tr align='center'>		
 								<td colspan='2'>
+								<br/>
 								<hr/>
 								<br/>
-								<button type="button" class="btn btn-success">Generišite ugovor</button>
+								</td>
+							</tr>
+							
+							<tr>
+								<td>Svrha uplate:</td>
+								<td><input type='text' name='svrhaUplate'></td>
+							</tr>
+							
+							<tr>
+								<td>Poziv na broj:</td>
+								<td><input type='text' name='pozivNaBroj'></td>
+							</tr>
+							
+							<tr>
+								<td>Broj računa za uplatu:</td>
+								<td><input type='text' name='brRacuna'></td>
+							</tr>
+							
+							<tr>
+								<td>Iznos računa u dinarima:</td>
+								<td><input type='number' name='iznosRacuna'></td>
+							</tr>
+
+							<tr align='center'>		
+								<td colspan='2'>
+								<hr/>
+								<br/>
+								<button type="button" class="btn btn-success">Pošaljite račun</button>
 								</td>
 							</tr>
 						</table>

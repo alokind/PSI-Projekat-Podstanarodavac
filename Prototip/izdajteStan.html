@@ -13,16 +13,19 @@
 			</a>
 			<ul class="navbar-nav">
 				<li class="nav-item">
-					<a class="nav-link" href="pocetna.html">Pocetna</a>
+					<a class="nav-link" href="pocetna.html">Početna</a>
 				</li>
 				<li class="nav-item">
 					<a class="nav-link" href="prijava.html">Prijava</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="ulogeVlasnika.html">Meni</a>
 				</li>
 				
 			</ul>
 		 </nav>
 		 <br/>
-		  <a href="oglasnaTabla.html">
+		   <a href="oglasnaTabla.html">
 			<img src="ot.png" alt="tabla"style="width:60px;" align="left">
 		</a>
 		 <a href="pocetna.html">
@@ -32,7 +35,7 @@
 			<img src="profil.png" alt="profil"style="width:45px;" align="right">
 		</a>
 		<br><br><br>
-		 <h4 align="center">Potvrdite uplatu računa:</h4>
+		 <h4 align="center">Izdajte stan podstanaru:</h4>
 		 <br/>
 		 <table align='center' width='40%' bgcolor='black'>
 			<tr bgcolor='ffaa80' height="50px">
@@ -41,45 +44,52 @@
 			<tr height="350px">
 				<td colspan='2' bgcolor='white' align='center' width='50%'>
 					<br/>
-					<h3>Potvrdite uplatu:</h3></h3>
+					<h3>Unesite detalje zakupa:</h3></h3>
 					<br/>
 					<form>
 						<table>
-							<tr align='center'>
-								<td>Odaberite podstanara:</td>
-								<td>
-									<select>
-										<option>Pera</option>
-										<option>Mika</option>
-										<option>Žika</option>
-									</select>
-								</td>
+							<tr>
+								<td>Adresa stana:</td>
+								<td><input type='text' name='adresaStana'></td>
+							</tr>							
+							
+							<tr>
+								<td>Mesečna kirija u dinarima:</td>
+								<td><input type='number' name='kirija'></td>
+							</tr>
+							
+							<tr>
+								<td>Dužina trajanja zakupa u mesecima:</td>
+								<td><input type='number' name='duzinaZakupa'></td>
+							</tr>
+							
+							<tr>
+								<td>Datum početka zakupa:</td>
+								<td><input type='date' name='datumPocetkaZakupa'></td>
+							</tr>
+							
+							<tr>
+								<td>Kvadratura u m&sup2;:</td>
+								<td><input type='text' name='kvadratura'></td>
 							</tr>
 							
 							<tr align='center'>		
 								<td colspan='2'>
 								<br/>
-								<button type="button" class="btn btn-success">Potvrdi</button>
 								<hr/>
 								<br/>
 								</td>
 							</tr>
 							
 							<tr>
-								<td>Odaberite račun:</td>
-								<td>
-									<select multiple>
-										<option>Račun za kiriju</option>
-										<option>Račun za struju</option>
-										<option>Račun za Internet</option>
-									</select>
-								</td>
-							</tr>
+								<td >JMBG podstanara kome želite da izdate stan:</td>
+								<td ><input type='text' maxlength="13" name='jmbgPodstanara'></td>
+							</tr>	
 
 							<tr align='center'>		
 								<td colspan='2'>
 								<br/>
-								<button type="button" class="btn btn-success">Potvrdi plaćanje ovog/ovih računa</button>
+								<button type="button" class="btn btn-success">Pošaljite zahtev</button>
 								</td>
 							</tr>
 						</table>
