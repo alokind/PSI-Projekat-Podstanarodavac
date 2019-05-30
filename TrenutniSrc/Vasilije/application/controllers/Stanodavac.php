@@ -19,6 +19,8 @@ class Stanodavac extends CI_Controller {
         $this->load->model("ModelKorisnik");
         $this->load->library('form_validation');
         $this->aktivanKorisnik = $this->session->userdata('korisnik');
+		$this->load->model('ModelOglasnaTabla');
+        $this->load->model('ModelRacun');
     }
     
     //GLAVNE METODE
@@ -90,6 +92,11 @@ class Stanodavac extends CI_Controller {
         } else {
             $this->neuspesnaPrijava("Popunite prazna polja");
         }
+    }
+	public function logout(){
+        $this->session->unset_userdata('korisnik');
+        $this->session->sess_destroy();
+        redirect('Gost');
     }
     //--------------------------------------------------------------------------
     //--------------------------------------------------------------------------
