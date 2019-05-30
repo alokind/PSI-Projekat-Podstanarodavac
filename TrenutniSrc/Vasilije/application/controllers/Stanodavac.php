@@ -98,6 +98,12 @@ class Stanodavac extends CI_Controller {
         $this->session->sess_destroy();
         redirect('Gost');
     }
+	 public function okaciNaOglasnuV(){
+        $naslov = $this->input->post('naslovObav');
+        $tekst = $this->input->post('tekstObav');
+        $this->ModelOglasnaTabla->cuvajObavestenje($naslov,$tekst);
+        $this->load->view("okaciNaOglasnuV.php");
+    }
     //--------------------------------------------------------------------------
     //--------------------------------------------------------------------------
 }
