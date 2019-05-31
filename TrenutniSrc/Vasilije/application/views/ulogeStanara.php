@@ -24,12 +24,12 @@
 			
 		 </nav>
 		 <br/>
-		  <a href="oglasnaTabla.html">
+		<a href="<?php echo site_url("Podstanar/uzmiObavestenje"); ?>">
 			<img src="ot.png" alt="tabla"style="width:60px;" align="left">
 		</a>
                  
 		<!-- DEBAGOVANJE -->
-		<a href="<?php echo('Azurator/odjava');       ?>">
+		<a href="<?php echo('Podstanar/odjava');       ?>">
 			<img src="logout.png" alt="odjava"style="width:45px;" align="right">
 		</a>
                  
@@ -45,7 +45,7 @@
 			<a href="sklopiUgovor.html" class="list-group-item">Sklapanje ugovora</a>
 			<a href="platiRacun.html" class="list-group-item">Plaćanje računa</a>
 			<a href="prijaviKvar.html" class="list-group-item">Prijava kvara vlasniku</a>
-			<a href="okaciNaOglasnu.html" class="list-group-item">Okačite obaveštenje na oglasnu tablu</a>
+			<a href="<?php echo site_url("Podstanar/okaciNaOglasnuP"); ?>" class="list-group-item">Okačite obaveštenje na oglasnu tablu</a>
 			
 		</div>
 		
