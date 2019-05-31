@@ -1,12 +1,91 @@
 <?php
 
+
+
 /**
  * Description of ModelZakup
  *
- * @author bojanakri
+ * @author Bosko
  */
 class ModelZakup extends CI_Model{
+    
     public function __construct() {
         parent::__construct();
+    }
+    
+    /*
+     *  Pomocna funkcija koja mi sluzi da proverim da li je vlasnik 
+     *  kreirao ugovor koji podstanar moze da prihvati ili odbije.
+     */
+    public function kreiranZahtev($podstanarID){
+       $result=$this->db->where('IDStanara',$podstanarID)->get('Zakup'); //Pretpostavka da imam samo 1 red u zakupu
+       $ugovor=$result->row();
+        if ($ugovor!=NULL) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    }
+    
+    
+    public function zakupiStan($podstanarID,$prihvacen){
+        //Fejkcina klasicna, jbg...
+        $this->db->from('zakup');
+        $this->db->where("IDStanara",$podstanarID);
+        $query = $this->db->get();
+        $result = $query->row();
+        $vlasnikID = $result->IDVlasnika;
+        $this->db->query("UPDATE zakup SET Prihvacen='$prihvacen' WHERE IDVlasnika='1' AND IDStanara='$podstanarID'");
+    }
+        
+    
+    public function izgenerisiUgovor($podstanarID){
+        $data=[];
+        //Dohvatanje ugovora iz baze:
+        $this->db->from('zakup');
+        $this->db->where('IDStanara',$podstanarID);
+        $query=$this->db->get();
+        $result=$query->row(); //Ceo ugovor mi je sad u nizu $result
+        //Dohvatanje svih informacija iz jednog reda tabele Ugovor
+        $idZ = $result->IDZ;   
+        $data['idz']=$idZ;
+        $idVlasnika = $result->IDVlasnika;
+        $data['idvlasnika']=$idVlasnika;
+        $idStanara = $result->IDStanara;
+        $data['idstanara']=$idStanara;
+        $adresa = $result->AdresaStana;
+        $data['adresa']=$adresa;
+        $kirija = $result->Kirija;
+        $data['kirija']=$kirija;
+        //$trajanje = $result->TrajanjeZakupa/Mesec; //FIX THIS!
+        $trajanje = 1;
+        $data['trajanje']=$trajanje;
+        $datum = $result->DatumPocetkaZakupa;
+        $data['datum']=$datum;
+        $kvadratura = $result->Kvadratura;
+        $data['kvadratura']=$kvadratura;
+        $prihvacen = $result->Prihvacen;
+        $data['prihvacen']=$prihvacen;
+        
+        //Dohvatanje svih ostalih informaciaj iz tabele Korisnik //Za vlasnika
+        $this->db->from('korisnik');
+        $this->db->where('IDK',$idVlasnika);
+        $query=$this->db->get();
+        $result=$query->row();
+        $imeVlasnik = $result->Ime; $data['imeV']=$imeVlasnik;
+        $ulicaVlasnik = $result->Adresa; $data['ulicaV']=$ulicaVlasnik;
+        
+        //Dohvatanje svih ostalih informaciaj iz tabele Korisnik
+        $this->db->from('korisnik');
+        $this->db->where("IDK",$idStanara);
+        $query=$this->db->get();
+        $result=$query->row();
+        $imePodstanar = $result->Ime; $data['imeP']=$imePodstanar;
+        $ulicaPodstanar = $result->Adresa;  $data['ulicaP']=$ulicaPodstanar;
+        
+         $this->load->helper('pdf_helper');
+        
+            
+         $this->load->view('pdfreport',$data);
     }
 }
