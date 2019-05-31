@@ -2,8 +2,7 @@
 
 tcpdf();
 $obj_pdf = new TCPDF('P', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-//$obj_pdf->SetCreator(PDF_CREATOR);
-$title = "UGOVOR O ZAKUPU";
+$title = "Ugovor o zakupu stana";
 $obj_pdf->SetTitle($title);
 //$obj_pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, $title, PDF_HEADER_STRING);
 //$obj_pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
@@ -13,56 +12,86 @@ $obj_pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
 $obj_pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
 $obj_pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
 $obj_pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
-$obj_pdf->SetFont('helvetica', '', 12);
+$obj_pdf->SetFont('freeserif', '', 10);
 $obj_pdf->setFontSubsetting(false);
 $obj_pdf->AddPage();
-ob_start(); ?>
-    <html>
-        <head>
-            <title>Ugovor o zakupu</title>
-        </head>
-        <body>
-            <h1 align='center'>UGOVOR O ZAKUPU STANA </h1>
-            <p>
-                Zaključen datuma: <?php echo date("Y-m-d");?> između: <br>
-                1. <?php echo $imeV;?> , ulica: <?php echo $ulicaV;?> <br>
-                (u daljem tekstu: <b>Vlasnik</b> <br>
-                2. <?php echo $imeP;?> , ulica: <?php echo $ulicaP;?> <br>
-                (u daljem tekstu: <b>Podstanar</b> <br>
-            </p>
-            <br>
-            <h3> Član 1</h3>
-            <br>
-            <p>
-                Vlasnik izdaje Podstanaru u zakup stan, povšine <?php echo $kvadratura;?> m2, <br>
-                u ulici <?php echo $adresa;?>,počevši od <?php echo $datum;?>, <br>
-                u trajanju od <?php echo $trajanje;?>.
-            </p>    
-            <br>
-            <h3> Član 2</h3>
-            <p>
-                Vlasnik se obavezuje da Podstanaru dana <?php echo $datum;?> preda stan u stanju <br>
-                podobnom za stanovanje. <br><br>
-                Podstanar se obavezuje da Vlasniku, odmah po ulasku u stan, odjednom isplati<br>
-                <?php echo $kirija;?> evra za kiriju, da stan koristi kao dobar <br>
-                domaćin, snosi sve troškove potrebne za njegovo redovno održavanje i da<br>
-                Vlasnika obaveštava o važnim okolnostima vezanim za stan.<br>
-            </p>   
-            <h3> Član 3</h3>
-            <p>
-                Ovaj ugovor sačinjen je u 2 istovetna primerka, po 2 za svaku ugovornu <br>
-                stranu.
-            </p>
-            <br>
-            <p>
-                VLASNIK:  <?php echo $imeV;?> 
-                PODSTANAR: <?php echo $imeP;?>
-            </p>
-        </body>
-    </html>
-   
-            <?php
-    $content = ob_get_contents();
-ob_end_clean();
-$obj_pdf->writeHTML($content, true, false, true, false, '');
-$obj_pdf->Output('UgovorOZakupu.pdf', 'D');
+
+
+ $html =
+                '
+		<h2 align="center">UGOVOR O ZAKUPU STANA</h2>
+			<p><br><br></p>
+			
+			<h3 align="center">Član 1</h3>
+		<p align="justify">
+			Zaključen dana '.date("d.m.Y.").' godine između:<br><br>
+			1. '.$imeV.' '.$prezimeV.' sa adresom '.$ulicaV.'<br>
+			(dalje: Zakupodavac), i<br><br>
+			2. '.$imeP.' '.$prezimeP.' sa adresom '.$ulicaP.'<br>
+			(dalje: Zakupac).<br><br>
+			Ugovorne strane su se sporazumele o sledećem:
+		</p>
+			<h3 align="center">Član 2</h3>
+		<p align="justify">
+			Zakupodavac se obavezuje da Zakupcu dana '.date('d.m.Y.', strtotime($datum)).' godine preda stan u stanju
+			podobnom za stanovanje.<br><br>
+			Zakupac se obavezuje da Zakupodavcu, odmah po ulasku u stan, odjednom isplati
+			zakupninu u ukupnom iznosu od '.$kirija.' dinara, da stan koristi kao
+			dobar domaćin, snosi sve troškove potrebne za redovno održavanje stana i da Zakupodavca
+			obaveštava o važnim okolnostima vezanim za stan.<br><br>
+			Zakupac je obavezan da snosi sve troškove koji nastanu upotrebom stana (telefon, struja, voda,
+			smeće itd).<br><br>
+			Porez i vanredne troškove održavanja stana snosi Zakupodavac, a redovne Zakupac.
+		</p>
+			<h3 align="center">Član 3</h3>
+		<p align="justify">
+			Zakupac ne može bez pristanka Zakupodavca menjati namenu prostorija ili izvoditi radove
+			kojima bi se promenila dispozicija odnosno veličina prostorija niti deo prostorija ili ceo stan
+			izdati u podzakup. Ako bi Zakupac takve radove preduzeo ili prostorije drugom izdao,
+			Zakupodavac je ovlašćen da za ubuduće jednostrano raskine ugovor.
+		</p>
+			<h3 align="center">Član 4</h3>
+		<p align="justify">
+			Ovaj ugovor prestaje istekom vremena na koji je zaključen, o čemu će Zakupodavac, jedan
+			mesec pre isteka roka, obavestiti Zakupca. On se može produžiti samo na osnovu posebnog
+			ugovora ugovornih strana.
+		</p>
+			<h3 align="center">Član 5</h3>
+		<p align="justify">
+			Ovaj ugovor sačinjen je u dva istovetna primerka, po jedan za svaku ugovornu
+			stranu.
+		</p>
+                <p><br><br></p>
+                <p><br><br></p>
+                <p><br><br></p>
+		<div align="justify">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    ZAKUPODAVAC 
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;
+                    ZAKUPAC
+                </div>
+                <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_________________________ 
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    _________________________
+                </div>
+		<br>
+		<br>';
+$obj_pdf->writeHTML($html, true, false, true, false, '');
+$obj_pdf->Output('UgovorOZakupu.pdf', 'I');
+
