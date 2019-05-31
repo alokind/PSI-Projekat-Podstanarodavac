@@ -19,7 +19,7 @@
  */
 
 class ModelKorisnik extends CI_Model {
-    private$korisnik;
+    public $korisnik;
     
     public function __construct() {
         parent::__construct();
@@ -35,6 +35,12 @@ class ModelKorisnik extends CI_Model {
         } else {
             return FALSE;
         }
+    }
+    
+    public function dohvatiKorisnikaById($id){
+        $result = $this->db->where('IDK',$id)->get('korisnik');
+        $kor = $result->row();
+        return $kor;
     }
     
     public function ispravnaLozinka($lozinka, $email){

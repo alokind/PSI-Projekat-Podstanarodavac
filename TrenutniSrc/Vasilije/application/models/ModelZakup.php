@@ -88,4 +88,58 @@ class ModelZakup extends CI_Model{
             
          $this->load->view('pdfreport',$data);
     }
+    
+    public function dodaj($vlasnikId, $stanarId, $adresaStana, $kirija, $duzinaZakupa, $datumPocetkaZakupa, $kvadratura){
+        $false = false;
+        $this->db->set("IDVlasnika", $vlasnikId);
+        $this->db->set("IDStanara", $stanarId);
+        $this->db->set("AdresaStana",$adresaStana);
+        $this->db->set("Kirija",$kirija);
+        $this->db->set("TrajanjeZakupa/Mesec",$duzinaZakupa);
+        $this->db->set("DatumPocetkaZakupa",$datumPocetkaZakupa);
+        $this->db->set("Kvadratura",$kvadratura);
+        $this->db->set("Prihvacen",false);
+        $this->db->insert("Zakup");
+   }
+   
+   public function vecIzdatTomPodstanaru($vlasnikId, $stanarId){
+        $this->db->where('IDVlasnika',$vlasnikId);
+        $this->db->where("IDStanara", $stanarId);
+        $this->db->from("Zakup");
+        $query = $this->db->get();
+        $row = $query->row();
+        if (isset($row)) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+   }
+   
+       public function dohvatiPodstanare($idStanodavac=NULL){
+        if ($idStanodavac == NULL) {
+            return null;
+        }
+        $this->db->where("IDVlasnika", $idStanodavac);
+        $this->db->from("Zakup");
+        $this->db->join('Korisnik', 'Korisnik.IDK = Zakup.IDStanara');
+        $query = $this->db->get();
+        $result = $query->result();
+        
+        $podstanari['ime'] = [];
+        $podstanari['value'] = [];
+        foreach ($result as $podstanar) {
+            array_push($podstanari['ime'], "".$podstanar->Ime." ".$podstanar->Prezime." (".$podstanar->Mail.")");
+            array_push($podstanari['value'], $podstanar->IDK);
+        }
+        return $podstanari;
+    }
+    
+    public function dohvatiZakupById($vlasnikId, $stanarId){
+        $this->db->where('IDVlasnika',$vlasnikId);
+        $this->db->where("IDStanara", $stanarId);
+        $this->db->from("Zakup");
+        $query = $this->db->get();
+        $row = $query->row();
+        return $row;
+    }
 }
