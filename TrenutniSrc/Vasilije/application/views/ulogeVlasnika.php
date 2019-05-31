@@ -24,12 +24,12 @@
 			
 			
 		 </nav>
-		 <br/> <a href="oglasnaTabla.html">
+		 <br/> <a href="<?php echo site_url("Stanodavac/uzmiObavestenje"); ?>">
 			<img src="ot.png" alt="tabla"style="width:60px;" align="left">
 		</a>
                  
 		<!-- DEBAGOVANJE -->
-		<a href="<?php echo('Azurator/odjava');       ?>">
+		<a href="<?php echo('Stanodavac/odjava');       ?>">
 			<img src="logout.png" alt="odjava"style="width:45px;" align="right">
 		</a>
                 
@@ -43,10 +43,10 @@
 		<div class="list-group">
 			<a href="izdajteStan.html" class="list-group-item">Izdajte stan</a>
 			<a href="generisiteUgovor.html" class="list-group-item">Generišite ugovor o zakupu stana</a>
-			<a href="unesiteRacun.html" class="list-group-item">Unesite račun za podstanara</a>
+			<a href="<?php echo site_url("Stanodavac/otvoriUnesiRacun"); ?>" class="list-group-item">Unesite račun za podstanara</a>
 			<a href="potvrditeUplatu.html" class="list-group-item">Potvrdite uplatu računa</a>
 			<a href="posaljiteObavestenjePodstanaru.html" class="list-group-item">Pošaljite obaveštenje/opomenu podstanaru</a>
-			<a href="okaciteNaOglasnuTablu.html" class="list-group-item">Okačite obaveštenje na oglasnu tablu</a>
+			<a href="<?php echo site_url("Stanodavac/okaciNaOglasnuV"); ?>" class="list-group-item">Okačite obaveštenje na oglasnu tablu</a>
 			
 		</div>
 		
@@ -57,3 +57,4 @@
 			</footer>
 	</body>
 </html>
+
