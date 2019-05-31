@@ -19,6 +19,8 @@ class Podstanar extends CI_Controller {
         $this->load->model("ModelKorisnik");
         $this->load->library('form_validation');
         $this->aktivanKorisnik = $this->session->userdata('korisnik');
+		  //dodala Bojana zbog oglasne table 
+        $this->load->model('ModelOglasnaTabla');
     }
     
     //GLAVNE METODE
@@ -93,4 +95,23 @@ class Podstanar extends CI_Controller {
     }
     //--------------------------------------------------------------------------
     //--------------------------------------------------------------------------
+	 /*Metode :  -odjava sa sistema pritiskom na logout
+                -kacenje obavestenja na oglasnu tablu     
+
+     Autor: Bojana Krivokapic 
+    */
+    //odjava sa sistema
+   public function logout(){
+        $this->session->unset_userdata('korisnik');
+        $this->session->sess_destroy();
+        redirect('Gost');
+    }
+    //kacenje obavestenja na oglasnu tablu, cuvam u bazu, ali i dalje ostajem na toj stranici
+    //jer po zelji mozda hoce da ostane na toj stranici
+        public function okaciNaOglasnuP(){
+        $naslov = $this->input->post('naslovObav');
+        $tekst = $this->input->post('tekstObav');
+        $this->ModelOglasnaTabla->cuvajObavestenje2($naslov,$tekst);
+    } 
+	
 }
