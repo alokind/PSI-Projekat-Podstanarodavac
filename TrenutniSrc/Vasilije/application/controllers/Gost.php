@@ -77,7 +77,7 @@ class Gost extends CI_Controller{
                 $this->session->set_userdata('korisnik', $korisnik);
                 
                 //U zavisnosti od tipa korisnika, odlazi se na odgovarajuci kontroler
-                if ($korisnik->Tip == 'S') {
+                if ($korisnik->Tip == 'P') {
                     redirect("Podstanar");
                 } else {
                     redirect("Stanodavac");
