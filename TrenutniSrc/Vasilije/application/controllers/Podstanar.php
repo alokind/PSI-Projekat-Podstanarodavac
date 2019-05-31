@@ -13,16 +13,20 @@
  */
 class Podstanar extends CI_Controller{
     
+    private $aktivanKorisnik=null;
+    
     //Konstruktor
     public function __construct() { //Da li treba ucitavati sve modele?
         parent::__construct();
         
+        $this->load->model("ModelKorisnik");
         $this->load->model("ModelKvar");
         $this->load->model("ModelObavestenjeOpomena");
         $this->load->model("ModelOglasnaTabla");
         $this->load->model("ModelRacun");
         $this->load->model("ModelZakup");
         $this->load->library('form_validation');
+        $this->aktivanKorisnik->session->userdata('korisnik');
     }
     
     //Indeks metoda
