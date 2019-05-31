@@ -1,7 +1,6 @@
 <html>
 	<head>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-	
 	</head>
 	<body>
 		<header>
@@ -15,38 +14,38 @@
 			<ul class="navbar-nav">
 				<li class="nav-item">
 					<a class="nav-link" href="<?php echo site_url('Gost/naPocetnu') ?>">Početna</a>
-				</li> <!-- href u PHP kontroler -->
+				</li>
 				<li class="nav-item">
 					<a class="nav-link" href="<?php echo site_url('Gost/naPrijavu') ?>">Prijava</a>
-				</li> <!-- href u PHP kontroler -->
-				
+				</li>
+			
 			</ul>
 			
 			
 		 </nav>
-		 <br/> <a href="<?php echo site_url("Stanodavac/uzmiObavestenje"); ?>">
+		 <br/>
+		<a href="<?php echo site_url("Podstanar/uzmiObavestenje"); ?>">
 			<img src="ot.png" alt="tabla"style="width:60px;" align="left">
 		</a>
                  
 		<!-- DEBAGOVANJE -->
-		<a href="<?php echo('Stanodavac/odjava');       ?>">
+		<a href="<?php echo('Podstanar/odjava');       ?>">
 			<img src="logout.png" alt="odjava"style="width:45px;" align="right">
 		</a>
-                
-                 <!-- Link -->
-		<a href="<?php echo site_url('Stanodavac/naProfil') ?>"> <!-- Putanja u PHP kontroler -->
+                 
+                <!-- Link -->
+		<a href="<?php echo site_url('Podstanar/naProfil') ?>"> <!-- Putanja u PHP kontroler -->
 			<img src="profil.png" alt="profil"style="width:45px;" align="right">
 		</a>
-                 
+                
 		<br><br><br>
-		<p>&nbsp;&nbsp;&nbsp;&nbsp; Poštovani vlasniče, dobrodošli!</p> 
+		<p>&nbsp;&nbsp;&nbsp;&nbsp; Poštovani stanaru, dobrodošli!</p> 
 		<div class="list-group">
-			<a href="izdajteStan.html" class="list-group-item">Izdajte stan</a>
-			<a href="generisiteUgovor.html" class="list-group-item">Generišite ugovor o zakupu stana</a>
-			<a href="<?php echo site_url("Stanodavac/otvoriUnesiRacun"); ?>" class="list-group-item">Unesite račun za podstanara</a>
-			<a href="potvrditeUplatu.html" class="list-group-item">Potvrdite uplatu računa</a>
-			<a href="posaljiteObavestenjePodstanaru.html" class="list-group-item">Pošaljite obaveštenje/opomenu podstanaru</a>
-			<a href="<?php echo site_url("Stanodavac/okaciNaOglasnuV"); ?>" class="list-group-item">Okačite obaveštenje na oglasnu tablu</a>
+			<a href="zakupStana.html" class="list-group-item">Zakup stana</a>
+			<a href="sklopiUgovor.html" class="list-group-item">Sklapanje ugovora</a>
+			<a href="platiRacun.html" class="list-group-item">Plaćanje računa</a>
+			<a href="prijaviKvar.html" class="list-group-item">Prijava kvara vlasniku</a>
+			<a href="<?php echo site_url("Podstanar/okaciNaOglasnuP"); ?>" class="list-group-item">Okačite obaveštenje na oglasnu tablu</a>
 			
 		</div>
 		
@@ -57,4 +56,3 @@
 			</footer>
 	</body>
 </html>
-
