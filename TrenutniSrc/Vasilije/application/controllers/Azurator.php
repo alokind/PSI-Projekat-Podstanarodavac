@@ -58,7 +58,7 @@ class Azurator extends CI_Controller {
             $nova_lozinka = $this->input->post('lozinka');
             $this->ModelKorisnik->izmeniLozinku($nova_lozinka);
             
-                    if ($trenutni_korisnik->Tip == 'S') {
+                    if ($trenutni_korisnik->Tip == 'P') {
                         redirect('Podstanar');
                     } else {
                         redirect('Stanodavac');
@@ -113,7 +113,7 @@ class Azurator extends CI_Controller {
                 $this->session->set_userdata('korisnik', $korisnik);
                 
                 //U zavisnosti od tipa korisnika, odlazi se na odgovarajuci kontroler
-                if ($korisnik->Tip == 'S') {
+                if ($korisnik->Tip == 'P') {
                     redirect("Podstanar");
                 } else {
                     redirect("Stanodavac");
