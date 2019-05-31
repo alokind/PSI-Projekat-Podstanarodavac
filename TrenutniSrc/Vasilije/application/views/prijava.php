@@ -6,12 +6,12 @@
 	
 	<body>
 		<header>
-			<h1 align="center"><img src="logo.png" alt="Logo" style="width:200px;"></h1>
+			<h1 align="center"><img src="../../public/images/logo.png" alt="Logo" style="width:200px;"></h1>
 		</header>
 		
 		 <nav class="navbar navbar-expand-md bg-dark navbar-dark">
 			<a class="navbar-brand" href="pocetna.html">
-				<img src="logo2.png" alt="logo" style="width:40px;">
+				<img src="../../public/images/logo2.png" alt="logo" style="width:40px;">
 			</a>
 			<ul class="navbar-nav">
 				<li class="nav-item">

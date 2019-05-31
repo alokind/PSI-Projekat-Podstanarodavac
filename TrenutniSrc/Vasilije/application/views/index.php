@@ -5,12 +5,12 @@
 	</head>
 	<body>
 		<header>
-			<h1 align="center"><img src="logo.png" alt="Logo" style="width:200px;"></h1>
+			<h1 align="center"><img src="public/images/logo.png" alt="Logo" style="width:200px;"></h1>
 		</header>
 		
 		 <nav class="navbar navbar-expand-md bg-dark navbar-dark">
 			<a class="navbar-brand" href="pocetna.html">
-				<img src="logo2.png" alt="logo" style="width:40px;">
+				<img src="public/images/logo2.png" alt="logo" style="width:40px;">
 			</a>
 			<ul class="navbar-nav">
 				<li class="nav-item">
@@ -26,7 +26,7 @@
 			<div class="row">
 				<div class="col-sm-12">
 					<div class="media">
-						<img src="bbcc.png">
+						<img src="public/images/bbcc.png">
 					</div>
 				</div>
 			</div>
@@ -47,7 +47,7 @@
 						<div class="tab-pane active container" id="why">
 							<div class="media">
 								<div class="media-left">
-									<img class="mr-3" src="upitnik.jpeg" style="width:200px; margin-top:10px;">
+									<img class="mr-3" src="public/images/upitnik.jpeg" style="width:200px; margin-top:10px;">
 								</div>
 								<div class="media-body" style="text-align:justify;">
 									<h4 class="mt-0">
