@@ -17,7 +17,7 @@
 }
 
 #image{
-	background-image: url("ogl1.png");
+	background-image: url("../../public/images/ogl1.png");
 	height:300px;
 	background-position:center;
 	background-repeat:no-repeat;
@@ -38,12 +38,12 @@
 	</head>
 	<body>
 		<header>
-			<h1 align="center"><img src="logo.png" alt="Logo" style="width:200px;"></h1>
+			<h1 align="center"><img src="../../public/images/logo.png" alt="Logo" style="width:200px;"></h1>
 		</header>
 		
 		 <nav class="navbar navbar-expand-md bg-dark navbar-dark">
 			<a class="navbar-brand" href="pocetna.html">
-				<img src="logo2.png" alt="logo" style="width:40px;">
+				<img src="../../public/images/logo2.png" alt="logo" style="width:40px;">
 			</a>
 			<ul class="navbar-nav">
 				<li class="nav-item">
@@ -57,11 +57,11 @@
 		 </nav>
 		 
 		  <br/>
-		 <a href="<?php echo site_url("Azurator/logout"); ?>">
-			<img src="logout.png" alt="odjava"style="width:45px;" align="right">
+		 <a href="pocetna.html">
+			<img src="../../public/images/logout.png" alt="odjava"style="width:45px;" align="right">
 		</a>
 		<a href="profil.html">
-			<img src="profil.png" alt="profil"style="width:45px;" align="right">
+			<img src="../../public/images/profil.png" alt="profil"style="width:45px;" align="right">
 		</a>
 		<br><br><br>
 		
@@ -71,14 +71,19 @@
 			<div id='image'></div>
 			<div id='delimiter'></div>
 			<table>
-                                       <?php 
-                                        foreach ($result as $key):
-                                               ?>
-                            <tr ><td><?php echo $key->Naslov;?></td>
-                            <td><?php echo $key->Tekst;?></td></tr>
-                                     <?php endforeach;?>
-                        </table>
-                      
+			<tr>
+			<td><img src="../../public/images/ogl2.png"style="width:65px;"></td>
+			<td>Kasnite sa kirijom 10 dana.</td>
+			</tr>
+			<tr>
+			<td><img src="../../public/images/ogl3.png"style="width:65px;"></td>
+			<td>Potrebno je i da platite struju, kako Vas ne bi isključili.</td>
+			</tr>
+			<tr>
+			<td><img src="../../public/images/ogl4.png"style="width:65px;"></td>
+			<td>Zašto se niste pojavili na današnjem sastanku stanara, a Vi ste ga zakazali?</td>
+			</tr>
+			</table>
 			</div>
 			
 		 <hr>
