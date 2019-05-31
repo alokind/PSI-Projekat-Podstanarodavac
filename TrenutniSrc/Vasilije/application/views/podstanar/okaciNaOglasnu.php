@@ -43,7 +43,8 @@
                     <br/>
                     <h3>Okačite obaveštenje na oglasnu tablu:</h3></h3>
                     <br/>
-                    <form id='okaciNaOglasnuTablu'>
+                   <form id='okaciNaOglasnuTablu'  action="<?php 
+                                        echo site_url('Podstanar/okaciNaOglasnuP')?>" method="POST">
                         <table>
                             <tr>
                                 <td>Naziv obaveštenja:</td>
