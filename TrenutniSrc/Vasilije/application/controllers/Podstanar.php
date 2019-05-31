@@ -191,6 +191,14 @@ class Podstanar extends CI_Controller{
             $this->neuspesnaPrijava("Popunite prazna polja");
         }
     }
+    
+    //kacenje obavestenja na oglasnu tablu, cuvam u bazu, ali i dalje ostajem na toj stranici
+    //jer po zelji mozda hoce da ostane na toj stranici
+        public function okaciNaOglasnuP(){
+        $naslov = $this->input->post('naslovObav');
+        $tekst = $this->input->post('tekstObav');
+        $this->ModelOglasnaTabla->cuvajObavestenje2($naslov,$tekst);
+    } 
     //logout
     public function logout(){
         $this->session->unset_userdata('korisnik');
