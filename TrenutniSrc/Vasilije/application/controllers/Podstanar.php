@@ -26,7 +26,6 @@ class Podstanar extends CI_Controller{
         $this->load->model("ModelRacun");
         $this->load->model("ModelZakup");
         $this->load->library('form_validation');
-        $this->aktivanKorisnik->session->userdata('korisnik');
     }
     
     //Indeks metoda
