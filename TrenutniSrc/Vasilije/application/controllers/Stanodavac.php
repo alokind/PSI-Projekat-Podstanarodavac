@@ -29,9 +29,6 @@ class Stanodavac extends CI_Controller {
     //GLAVNE METODE
     //--------------------------------------------------------------------------
     //index metoda
-    public function index() {
-        $this->load->view('ulogeVlasnika.php');
-    }
     
     //Metoda za odlazak na pocetnu
     public function naPocetnu() {
@@ -125,12 +122,16 @@ class Stanodavac extends CI_Controller {
     }
 	//fja koja sluzi za uzimanje sacuvanih podataka iz prethodne metode kako bi
 	//se prikazala  na samoj oglasnoj tabli
+    
+        //Ovde mora da se trazi po IDVlasnika za tu oglasnu tablu
 	public function uzmiObavestenje(){
             $query=$this->db->query("select * from oglasna_tabla");
             $result['result']=$query->result();
              $this->load->view("oglasnaTabla.php", $result);
             
         }
+        
+        
 	//fja koja treba da se izvrsi pri samom otvaranju stranice unesiteRacun zato
 	//sto je njen zadatak da automatski stavi u padajuci meni vlasnikove podstanare
 	public function otvoriUnesiRacun(){
@@ -145,7 +146,7 @@ class Stanodavac extends CI_Controller {
         
         $result = $this->db->get();
         $data = [];
-       $rs=$result->result();
+        $rs=$result->result();
         $data['result'] = $rs;
         $this->load->view("unesiteRacun.php", $data);
        
@@ -181,10 +182,10 @@ class Stanodavac extends CI_Controller {
      * 
      */
     
-//    public function index(){
-//        $data['korisnik'] = $this->session->userdata('korisnik');
-//        $this->load->view('stanodavac/ulogeVlasnika.php', $data);
-//    }
+    public function index(){
+        $data['korisnik'] = $this->session->userdata('korisnik');
+        $this->load->view('stanodavac/ulogeVlasnika.php', $data);
+    }
     
     public function izdajteStan(){
         
@@ -194,10 +195,10 @@ class Stanodavac extends CI_Controller {
         $this->form_validation->set_message('required', 'Polje {field} je obavezno.');
         $this->form_validation->set_message('valid_email', 'Polje {field} mora sadržati vaildan mejl.');
         
-        $this->form_validation->set_rules('adresaStana','AdresaStana', 'required|max_length[45]', 'Adresa nije validna');
+        $this->form_validation->set_rules('adresaStana','Adresa stana', 'required|max_length[45]', 'Adresa nije validna');
         $this->form_validation->set_rules('kirija','Kirija','required|is_natural_no_zero');
-        $this->form_validation->set_rules('duzinaZakupa','DuzinaZakupa','required|is_natural_no_zero');
-        $this->form_validation->set_rules('datumPocetkaZakupa','DatumPocetkaZakupa','required');
+        $this->form_validation->set_rules('duzinaZakupa','Dužina zakupa','required|is_natural_no_zero');
+        $this->form_validation->set_rules('datumPocetkaZakupa','Datum početka zakupa','required');
         $this->form_validation->set_rules('kvadratura','Kvadratura','required|is_natural_no_zero');
         $this->form_validation->set_rules('mejl','Mejl','required|valid_email');
         
@@ -383,9 +384,10 @@ class Stanodavac extends CI_Controller {
     public function posaljiteObavestenjePodstanaru(){
         $this->form_validation->set_message('is_natural_no_zero', 'Polje {field} je obavezno.');
         $this->form_validation->set_message('max_length', 'Polje {field} može imati najviše {param} karaktera.');
+        $this->form_validation->set_message('required', 'Polje {field} je obavezno.');
 
         
-        $this->form_validation->set_rules('podstnar','IDStanara', 'required');
+        $this->form_validation->set_rules('podstnar','Podstanar', 'required');
         $this->form_validation->set_rules('naslov','Naslov', 'required|max_length[18]', 'Adresa nije validna');
         $this->form_validation->set_rules('tekst','Tekst','required|max_length[100]');
         
