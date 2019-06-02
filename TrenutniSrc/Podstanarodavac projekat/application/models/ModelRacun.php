@@ -72,4 +72,18 @@ class ModelRacun extends CI_Model {
         $this->db->where("IDR", $IDRacuna);
         $this->db->delete('Racun');
    }
+    //Proveravam da li mi je vlasnik poslao novi ugovor koji mogu da prihvatim ili odbijem
+    public function imaUgovora($podstanarID){
+        $this->db->where("IDStanara", $podstanarID);
+        $this->db->from("Zakup");
+        $query = $this->db->get();
+        $row = $query->row();
+        $prihvacen = $row->Prihvacen;
+        if($prihvacen == 0){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 }
