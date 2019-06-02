@@ -37,7 +37,7 @@ class Stanodavac extends CI_Controller {
     
     //Metoda za prikaz profila
     public function naProfil() {
-        $this->load->view('profil.php');
+        $this->load->view('Stanodavac/profil.php');
     }
     
     //--------------------------------------------------------------------------
@@ -484,8 +484,6 @@ class Stanodavac extends CI_Controller {
             $data['poruka']= 'Uspešno ste okačili na oglasnu tablu';
             $this->okaciteNaOglasnuTabluPg($data);
         }
-        
-
     }
     
     public function oglasnaTabla($data=NULL){

@@ -60,52 +60,21 @@
             <br>
             <br>
             <br>
-        
-		 <table align='center' width='40%' bgcolor='black'>
-			<tr class='bg-dark'  height="50px">
-				<td colspan='2'>&nbsp;</td>
-			</tr>
-			<tr height="350px">
-                            <td colspan='2' bgcolor='white' align='center' width='50%'>
-                                <div class="card-body">   
-                                    <?php
-                                    if (isset($poruka)) {
-                                        echo "<br>";
-                                        echo '<div class="alert alert-' . $tipPoruke . '" role="alert">';
-                                        echo $poruka;
-                                        echo '</div>';
-                                        echo "<br>";
-                                    }
-                                    ?>
-                                    <h5 class="card-title text-center"> Plati račun: </h5><hr><br>
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <form class="form" action="<?php echo site_url('Podstanar/potvrditeUplatu') ?>" method="post">
-                  
-                                                    <select class="form-control" id ="racuni" name = "racuni[]" multiple>
-                                                        <?php
-                                                            if (isset($neplaceniRacuni)) {
-                                                                echo $neplaceniRacuni;
-                                                            }
-                                                        ?>
-                                                    </select>
-                                                    <br>
-                                                    <button class="btn btn-md btn-success btn-block text-uppercase" type="submit">Potvrdite plaćanje računa</button>
-                                                </form>
-                                            </div>
-        
-                                        </div>
-                                </div>
-                                
-                            </td>
-			</tr>
-			<tr class='bg-dark'  height="50px">
-				<td colspan='2'>&nbsp;</td>
-			</tr>
-		</table>
-        
-        <hr>
-        
+                 <div class="container">
+                     <h2 class="font-weight-bold mb-5 mt-5" >Obaveštenja i opomene koje Vam je vlasnik poslao</h2>
+                     <form action="<?php echo site_url('Podstanar/obrisiteObavestenje') ?>" method="post">
+                     <div class="row" id="mestoZaNarudzbine">
+                         <?php
+                         if (isset($obavestenja)) {
+                             echo $obavestenja;
+                         }
+                         ?>
+                     </div>
+                     </form>
+
+                 </div>
+                 <br/><br/><br/><br/><br/>
+        <!-- Footer -->
         <footer class="py-3 bg-dark fixed-bottom">
           <div class="container">
             <p class="m-0 text-center text-white">Copyright © 2019, Kakav tim - strašan tim, Odsek za softversko inženjerstvo Elektrotehničkog fakulteta Univerziteta u Beogradu
@@ -115,5 +84,5 @@
                 </p>
           </div>
         </footer>
-    </body>
+        </body>
 </html>

@@ -90,7 +90,7 @@ class ModelRacun extends CI_Model {
         $racuniHtml = '';
         foreach ($result as $row) {
             if($row->Placen != 1){
-                $racuniHtml .= '<option value="'.$row->IDR.'">'.$row->SvrhaUplate. ' poziv na broj('.$row->PozivNaBroj.') žiro-račun '.$row->ZiroRacun . " iznos: ". $row->Iznos.'</option>';
+                $racuniHtml .= '<option value="'.$row->IDR.'">Svrha: '.$row->SvrhaUplate. ' | Poziv na broj: '.$row->PozivNaBroj.' | Žiro-račun: '.$row->ZiroRacun . " | Iznos: ". $row->Iznos.'</option>';
         
             }
         }

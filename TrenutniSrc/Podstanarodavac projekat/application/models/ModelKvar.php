@@ -48,7 +48,7 @@ class ModelKvar extends CI_Model {
         foreach ($result as $row) {
             $kvarovi .= 
                                         '<div class="col-lg-3 col-md-4 col-sm-6 mb-4">'.
-                                                '<div class="card border-danger h-50 w-80">'.
+                                                '<div class="card bg-danger text-white h-50 w-80">'.
                                                   '<div class="card-header">'.$row->Ime.' '.$row->Prezime.
                                                       '<button type="submit" name="obrisi" class="close" aria-label="Close" value="'.$row->IDKvar.'">'.
                                                         '<span aria-hidden="true" title="Uklonite kvar">&times;</span>'.

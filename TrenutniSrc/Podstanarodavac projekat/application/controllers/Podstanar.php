@@ -21,7 +21,7 @@ class Podstanar extends CI_Controller{
         
         $this->load->model("ModelKorisnik");
         $this->load->model("ModelKvar");
-        //$this->load->model("ModelObavestenjeOpomena");
+        $this->load->model("ModelObavestenje_Opomena");
         $this->load->model("ModelOglasnaTabla");
         $this->load->model("ModelRacun");
         $this->load->model("ModelZakup");
@@ -30,7 +30,8 @@ class Podstanar extends CI_Controller{
     
     //Indeks metoda
     public function index(){
-        $this->load->view('podstanar/ulogeStanara.php');
+        $data['korisnik'] = $this->session->userdata('korisnik');
+        redirect("Podstanar/naProfil");
     }
     
     //Redirekcije://----------------------------------------------------------------------------
@@ -39,31 +40,69 @@ class Podstanar extends CI_Controller{
     }
     
     public function naUloge(){
-        $this->load->view("podstanar/ulogeStanara.php");
+        $this->naProfil();
     }
     
     public function naOglasnu($data=null){
-        $this->load->view("oglasnaTabla.php",$data);
+        $vlasnikId = $this->ModelZakup->dohvatiIdVlasnika($this->session->userdata("korisnik")->IDK);
+        $data['stvariNaOglasnojTabli'] = $this->ModelOglasnaTabla->dohvatiObavestenjaIDVlasnika($vlasnikId);
+        $this->load->view('Podstanar/oglasnaTabla.php', $data);
     }
     
-    public function naProfil(){
-        $this->load->view("profil.php");
+    public function naProfil() {
+        $korisnik = $this->session->userdata('korisnik');
+        $data['korisnik'] = $korisnik;
+        $ugovorPrihvacen = $this->ModelZakup->ugovorPrihvacen($this->session->userdata('korisnik')->IDK);
+        if($ugovorPrihvacen){
+           $data['sklopljenUgovor'] = "true"; 
+        }else{
+           $data['sklopljenUgovor'] = "false"; 
+        }
+        $this->load->view('Podstanar/profil.php', $data);
     }
     
     //Redirekcije na uloge podstanara://---------------------------------------------------------
     public function zakupiStanRedirect($data=null){
-        $ugovor = $this->ModelZakup->imaUgovora($this->session->userdata('korisnik')->IDK);
-        if($ugovor == true){
-            $data['ugovor']=$ugovor;
+        $korisnik = $this->session->userdata('korisnik');
+        $data['korisnik'] = $korisnik;
+        $ugovorPrihvacen = $this->ModelZakup->ugovorPrihvacen($this->session->userdata('korisnik')->IDK);
+        if($ugovorPrihvacen){
+           $data['sklopljenUgovor'] = "true"; 
+        }else{
+           $data['sklopljenUgovor'] = "false"; 
+        }
+        $postojiUgovor = $this->ModelZakup->postojiUgovorZaStanara($this->session->userdata('korisnik')->IDK);
+        if($postojiUgovor == false){
+            $data['mozeDaPrihvati']='false';
+            $data['poruka']="Stanodavac još uvek nije kreirao zahtev za zakupom stana. Kontaktirajte ga da to uradi.";
             $this->load->view("podstanar/zakupStana.php",$data);
         }
         else{
-            $this->load->view("podstanar/zakupStana.php");
+            $ugovorPrihvacen = $this->ModelZakup->ugovorPrihvacen($this->session->userdata('korisnik')->IDK);
+            if($ugovorPrihvacen == false){
+                $data['mozeDaPrihvati']='true';
+                $data['poruka']="Stanodavac je kreirao zahtev za zakup. Da li želite da ga prihvatite?";
+                $this->load->view("podstanar/zakupStana.php",$data);
+            }else
+            {
+                $data['mozeDaPrihvati']='false';
+                $data['poruka']="Već ste prihvatili zahtev za zakup stana.";
+                $this->load->view("podstanar/zakupStana.php",$data);
+            }
+            
         }
     }
     
     public function sklopiUgovorRedirect(){
-        $this->load->view("podstanar/sklopiUgovor.php");
+        $korisnik = $this->session->userdata('korisnik');
+        $data['korisnik'] = $korisnik;
+        $ugovorPrihvacen = $this->ModelZakup->ugovorPrihvacen($this->session->userdata('korisnik')->IDK);
+        if($ugovorPrihvacen){
+           $data['sklopljenUgovor'] = "true"; 
+        }else{
+           $data['sklopljenUgovor'] = "false"; 
+        }
+        $this->load->view("podstanar/sklopiUgovor.php",$data);
     }
     
     public function platiRacunRedirect($data=null){ //---------------------------------------------------------------------------------------
@@ -327,6 +366,20 @@ class Podstanar extends CI_Controller{
         }
     }
     
+    public function prikaziObavestenja(){
+        $stanarId = $this->session->userdata("korisnik")->IDK;
+        $data['obavestenja'] = $this->ModelObavestenje_Opomena->dohvatiObavestenjaIDStanara($stanarId);
+        $this->load->view('podstanar/obavestenja_opomene.php', $data);
+    }
+    
+    public function obrisiteObavestenje(){
+        $stanarId = $this->session->userdata("korisnik")->IDK;
+        $IDO = $this->input->post('obrisi');
+        $this->ModelObavestenje_Opomena->obrisiObavestenje($IDO);
+        $data['obavestenja'] = $this->ModelObavestenje_Opomena->dohvatiObavestenjaIDStanara($stanarId);
+        $this->load->view('podstanar/obavestenja_opomene.php', $data);
+    }
+    
     
      public function okaciteNaOglasnuTablu(){
         
@@ -354,16 +407,12 @@ class Podstanar extends CI_Controller{
             $data['poruka']= 'Uspešno ste okačili na oglasnu tablu';
             $this->okaciObavestenjeRedirect($data);
         }
-        
-
     }
     
-    //Izlistavanje oglasne table
     public function oglasnaTabla($data=NULL){
-        
-        $stanarID = $this->session->userdata("korisnik")->IDK;
-        $data['stvariNaOglasnojTabli'] = $this->ModelOglasnaTabla->dohvatiObavestenjaIDStanara($stanarID);
-        $this->naOglasnu($data);
+        $vlasnikId = $this->ModelZakup->dohvatiIdVlasnika($this->session->userdata("korisnik")->IDK);
+        $data['stvariNaOglasnojTabli'] = $this->ModelOglasnaTabla->dohvatiObavestenjaIDVlasnika($vlasnikId);
+        $this->load->view('Podstanar/oglasnaTabla.php', $data);
     }
     
     //logout

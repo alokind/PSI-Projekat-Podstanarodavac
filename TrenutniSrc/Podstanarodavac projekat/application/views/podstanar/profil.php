@@ -72,24 +72,87 @@
             <br>
             <br>
             <br>
-            <br>
-            <br>
-                
-            <p align="center">
-                <?php
-                    if (isset($poruka) && isset($mozeDaPrihvati)) {
-                        echo '<button type="button" class="btn btn-info" disabled>';
-                        echo $poruka;
-                        echo "</button>";
-                        echo '<br><br><br>';
-                        if($mozeDaPrihvati == 'true'){
-                            echo '<form name="zakupStana" action="';echo site_url("Podstanar/zakupiStan");echo'" method="post" align="center">';
-                            echo '<button type="submit" class="btn btn-success" name="confirm">Potvrdi</button>';
-                            echo '<button type="submit" class="btn btn-danger" name="refuse">Odbij</button></form>';
-                        }                        
-                    }
-                ?>
-            </p>
+
+            <div class ='container'>
+                <div class="row">
+                    <div class="col-2"></div>
+                    <div class="col-8">
+                        <div class="card text-white bg-dark my-3 mx-5">
+                            <div class="card-body">
+                                <h3 class="card-title">
+                                    <?php
+                                        $korisnik = $this->session->userdata('korisnik');
+                                        $ime = $korisnik->Ime;
+                                        $prezime = $korisnik->Prezime;
+                                        echo $ime;
+                                        echo ' ';
+                                        echo $prezime;
+                                    ?>
+                                </h3><hr>
+                                <div class="card-text">
+                                    <div class="row">
+                                        <div class="col-lg-4 col-md-12 my-auto mx-auto" align="center" style=" display: table;">
+                                            <img src="../../public/images/profil.png" alt="logo" style="width:80%;" >   
+                                            <br><br>
+                                        </div>
+                                        <div class="col-lg-8 col-md-12">
+                                            <p><strong>Mejl: </strong> 
+                                                <?php
+                                                    $korisnik = $this->session->userdata('korisnik');
+                                                    $email = $korisnik->Mail;
+                                                    echo $email;
+                                                ?>
+                                            </p><hr>
+                                            <p><strong>Telefon: </strong> 
+                                                <?php
+                                                    $korisnik = $this->session->userdata('korisnik');
+                                                    $telefon = $korisnik->BrojTelefona;
+                                                    echo $telefon;
+                                                ?>
+                                            </p><hr>
+                                            <p><strong>Adresa: </strong>
+                                                <?php
+                                                    $korisnik = $this->session->userdata('korisnik');
+                                                    $adresa = $korisnik->Adresa;
+                                                    echo $adresa;
+                                                ?>
+                                            </p><hr>
+                                            <p><strong>Pol: </strong>
+                                                <?php
+                                                    $korisnik = $this->session->userdata('korisnik');
+                                                    $pol = $korisnik->Pol;
+                                                    if ($pol = "M"){
+                                                        echo "Muški";
+                                                    }
+                                                    else echo "Ženski"
+                                                ?>
+                                            </p><hr>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-2"></div>
+                </div>
+                <br><hr><br>
+                <div class="row">
+                    <div class="col-3"></div>
+                    <div class="col-6">
+                        <h3 align="center"> Promenite lozinku </h3>
+                        <!-- Ažuriranje lozinke -->
+                        <p align="center">
+                        <form action="<?php echo site_url('Azurator/azuriraj') ?>" method="post">
+
+                             <input type="password" name="lozinka" class="form-control" placeholder="Nova lozinka"> <br>
+                             <input class="btn btn-md btn-success btn-block text-uppercase" type="submit"  name="azuriranje" value="AŽURIRAJ">
+                        </form>
+                    </div>
+                    <div class="col-3"></div>
+                </div>
+                <br><br><br><br>
+            </div>
+ 
                 
         <footer class="py-3 bg-dark fixed-bottom">
           <div class="container">
@@ -100,5 +163,6 @@
                 </p>
           </div>
         </footer>
+  
 	</body>
 </html>

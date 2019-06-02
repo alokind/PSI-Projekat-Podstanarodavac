@@ -115,7 +115,7 @@ class ModelZakup extends CI_Model{
         }
    }
    
-       public function dohvatiPodstanare($idStanodavac=NULL){
+    public function dohvatiPodstanare($idStanodavac=NULL){
         if ($idStanodavac == NULL) {
             return null;
         }
@@ -134,6 +134,18 @@ class ModelZakup extends CI_Model{
         return $podstanari;
     }
     
+    public function dohvatiIdVlasnika($idStanar=NULL){
+        if ($idStanar == NULL) {
+            return null;
+        }
+        $this->db->where("IDStanara", $idStanar);
+        $this->db->from("Zakup");
+        $query = $this->db->get();
+        $row = $query->row();
+        
+        return $row->IDVlasnika;
+    }
+    
     public function dohvatiZakupById($vlasnikId, $stanarId){
         $this->db->where('IDVlasnika',$vlasnikId);
         $this->db->where("IDStanara", $stanarId);
@@ -144,17 +156,31 @@ class ModelZakup extends CI_Model{
     }
     
     //Proveravam da li mi je vlasnik poslao novi ugovor koji mogu da prihvatim ili odbijem
-    public function imaUgovora($podstanarID){
+    public function ugovorPrihvacen($podstanarID){
         $this->db->where("IDStanara", $podstanarID);
         $this->db->from("Zakup");
         $query = $this->db->get();
         $row = $query->row();
         $prihvacen = $row->Prihvacen;
         if($prihvacen == 0){
-            return true;
+            return false;
         }
         else{
+            return true;
+        }
+    }
+    
+    //Proveravam da li mi je vlasnik poslao novi ugovor koji mogu da prihvatim ili odbijem
+    public function postojiUgovorZaStanara($podstanarID){
+        $this->db->where("IDStanara", $podstanarID);
+        $this->db->from("Zakup");
+        $query = $this->db->get();
+        $row = $query->row();
+        if($row == null){
             return false;
+        }
+        else{
+            return true;
         }
     }
 }
