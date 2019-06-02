@@ -72,18 +72,37 @@ class ModelRacun extends CI_Model {
         $this->db->where("IDR", $IDRacuna);
         $this->db->delete('Racun');
    }
-    //Proveravam da li mi je vlasnik poslao novi ugovor koji mogu da prihvatim ili odbijem
-    public function imaUgovora($podstanarID){
-        $this->db->where("IDStanara", $podstanarID);
-        $this->db->from("Zakup");
+   
+    public function dohvatiRacune($IDstanara){
+        
+        
+        $this->db->where("Placen", 0);
+        $this->db->where("IDStanara", $IDstanara);
+        $this->db->from("Racun");
+        $this->db->join('Korisnik', 'Korisnik.IDK = Racun.IDStanara');
         $query = $this->db->get();
-        $row = $query->row();
-        $prihvacen = $row->Prihvacen;
-        if($prihvacen == 0){
-            return true;
+
+        $result = $query->result();
+
+        //Null -> Stanar nije platio racun
+        //1 -> Stanar platio racun
+        
+        $racuniHtml = '';
+        foreach ($result as $row) {
+            if($row->Placen != 1){
+                $racuniHtml .= '<option value="'.$row->IDR.'">'.$row->SvrhaUplate. ' poziv na broj('.$row->PozivNaBroj.') žiro-račun '.$row->ZiroRacun . " iznos: ". $row->Iznos.'</option>';
+        
+            }
         }
-        else{
-            return false;
+     
+        return $racuniHtml;
+   }
+   
+    public function oznaciRacun($IDRacuna){
+        if ($IDRacuna == NULL) {
+            return null;
         }
-    }
+        $this->db->query("UPDATE racun SET Placen='1' WHERE IDR='$IDRacuna'");
+   }
+   
 }
