@@ -1,5 +1,4 @@
 <?php
-
 /*
  * 
  * Opis:    - Klasa kontrolera za akcije podstanara
@@ -40,7 +39,7 @@ class Podstanar extends CI_Controller{
     }
     
     public function naUloge(){
-        $this->load->view("podstanar/ulogeStanara.php");
+        $this->naProfil();
     }
     
     public function naOglasnu($data=null){
@@ -63,6 +62,14 @@ class Podstanar extends CI_Controller{
     
     //Redirekcije na uloge podstanara://---------------------------------------------------------
     public function zakupiStanRedirect($data=null){
+        $korisnik = $this->session->userdata('korisnik');
+        $data['korisnik'] = $korisnik;
+        $ugovorPrihvacen = $this->ModelZakup->ugovorPrihvacen($this->session->userdata('korisnik')->IDK);
+        if($ugovorPrihvacen){
+           $data['sklopljenUgovor'] = "true"; 
+        }else{
+           $data['sklopljenUgovor'] = "false"; 
+        }
         $postojiUgovor = $this->ModelZakup->postojiUgovorZaStanara($this->session->userdata('korisnik')->IDK);
         if($postojiUgovor == false){
             $data['mozeDaPrihvati']='false';
@@ -135,6 +142,13 @@ class Podstanar extends CI_Controller{
         redirect("Podstanar/naUloge");
     }
     
+ 
+    
+    
+    
+    
+    
+    
     
     
     /* 
@@ -155,7 +169,6 @@ class Podstanar extends CI_Controller{
         $vlasnik = $this->ModelKorisnik->dohvatiKorisnikaById($vlasnikId);
         $stanar = $this->ModelKorisnik->dohvatiKorisnikaById($stanarId);
         $zakup = $this->ModelZakup->dohvatiZakupById($vlasnikId, $stanarId);
-
         $this->load->library('Pdf');
         $pdf = new Pdf('P', 'mm', 'A4', false, 'UTF-8', false);
         $pdf->SetTitle('Ugovor o zakupu stana');
@@ -164,14 +177,11 @@ class Podstanar extends CI_Controller{
         $pdf->SetAutoPageBreak(true);
         $pdf->SetAuthor('Podstanarodavac');
         $pdf->SetDisplayMode('real', 'default');
-
         $pdf->AddPage();
-
         $html =
                 '
                 <h2 align="center">UGOVOR O ZAKUPU STANA</h2>
                         <p><br><br></p>
-
                         <h3 align="center">Član 1</h3>
                 <p align="justify">
                         Zaključen dana '.date("d.m.Y.").' godine između:<br><br>
@@ -241,7 +251,6 @@ class Podstanar extends CI_Controller{
                 </div>
                 <br>
                 <br>';
-
         $pdf->writeHTML($html, true, false, true, false, '');
         $pdf->Output('Ugovor o zakupu stana.pdf', 'D');
      }
@@ -299,57 +308,6 @@ class Podstanar extends CI_Controller{
         }
         redirect("Podstanar/naUloge");
     }
-   
-    //Vasilije:
-    //METODE ZA PRIJAVU    Otvoreno pitanje - da li je potrebno da stoji uopste ovo dugme
-    //--------------------------------------------------------------------------
-    //Metoda za odlazak na stranicu prijavu
-    public function naPrijavu() {
-        $this->load->view('prijava.php');   
-    }
-
-    //Metoda za prikaz greske pri neuspesnoj prijavi
-    public function neuspesnaPrijava($poruka = NULL) {
-        $this->session->set_flashdata('error_login_msg', $poruka);
-        $this->naPrijavu();
-    }
-    
-    //Metoda za prijavljivanje - radjena na nacin sa form_validation->run()
-    public function ulogujse() {
-        //Obavezni email i password
-        $this->form_validation->set_rules("email", "Email", "required");
-        $this->form_validation->set_rules("passwd", "Password", "required");
-        
-        //Poruka ako je neko polje ostalo prazno
-        $this->form_validation->set_message("required","Polje {field} je ostalo prazno.");
-        
-        $email = $this->input->post('email');
-        $lozinka = $this->input->post('passwd');
-        
-        if ($this->form_validation->run()) {
-            //Provera da li postoji korisnik sa datim emailom i odredjivanje eventualne greske
-            if (!$this->ModelKorisnik->dohvatiKorisnika($email)) {
-                $this->neuspesnaPrijava("Neispravan email");
-                
-            } else if (!$this->ModelKorisnik->ispravnaLozinka($lozinka)) {
-                $this->neuspesnaPrijava("Neispravna lozinka");
-                
-            } else {
-                //Nakon uspesne prijave, pamti se koji je korisnik u sesiji
-                $korisnik = $this->ModelKorisnik->dohvacenKorisnik();
-                $this->session->set_userdata('korisnik', $korisnik);
-                
-                //U zavisnosti od tipa korisnika, odlazi se na odgovarajuci kontroler
-                if ($korisnik->Tip == 'P') {
-                    redirect("Podstanar");
-                } else {
-                    redirect("Stanodavac");
-                }
-            }
-        } else {
-            $this->neuspesnaPrijava("Popunite prazna polja");
-        }
-    }
     
     public function prikaziObavestenja(){
         $stanarId = $this->session->userdata("korisnik")->IDK;
@@ -370,7 +328,6 @@ class Podstanar extends CI_Controller{
         
         $this->form_validation->set_message('max_length', 'Polje {field} može imati najviše {param} karaktera.');
         $this->form_validation->set_message('required', 'Polje {field} je obavezno.');
-
         
         $this->form_validation->set_rules('naslov','Naslov', 'required|max_length[18]');
         $this->form_validation->set_rules('tekst','Tekst','required|max_length[108]');
