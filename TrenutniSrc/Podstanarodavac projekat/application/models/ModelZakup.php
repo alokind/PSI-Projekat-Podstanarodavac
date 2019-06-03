@@ -29,12 +29,13 @@ class ModelZakup extends CI_Model{
     
     
     public function zakupiStan($podstanarID,$prihvacen){
+        //Fejkcina klasicna, jbg...
         $this->db->from('zakup');
         $this->db->where("IDStanara",$podstanarID);
         $query = $this->db->get();
         $result = $query->row();
         $vlasnikID = $result->IDVlasnika;
-        $this->db->query("UPDATE zakup SET Prihvacen='$prihvacen' WHERE IDVlasnika='$vlasnikID' AND IDStanara='$podstanarID'");
+        $this->db->query("UPDATE zakup SET Prihvacen='$prihvacen' WHERE IDVlasnika='1' AND IDStanara='$podstanarID'");
     }
         
     
@@ -56,8 +57,9 @@ class ModelZakup extends CI_Model{
         $data['adresa']=$adresa;
         $kirija = $result->Kirija;
         $data['kirija']=$kirija;
-        //$trajanje = $result->TrajanjeZakupa/Mesec; //FIX THIS!
-        $trajanje = 1;
+        $trajanje = $result->TrajanjeZakupa; 
+        ////FIX THIS!
+        //$trajanje = 1;
         $data['trajanje']=$trajanje;
         $datum = $result->DatumPocetkaZakupa;
         $data['datum']=$datum;
@@ -94,7 +96,7 @@ class ModelZakup extends CI_Model{
         $this->db->set("IDStanara", $stanarId);
         $this->db->set("AdresaStana",$adresaStana);
         $this->db->set("Kirija",$kirija);
-        $this->db->set("TrajanjeZakupa/Mesec",$duzinaZakupa);
+        $this->db->set("TrajanjeZakupa",$duzinaZakupa);
         $this->db->set("DatumPocetkaZakupa",$datumPocetkaZakupa);
         $this->db->set("Kvadratura",$kvadratura);
         $this->db->set("Prihvacen",false);
