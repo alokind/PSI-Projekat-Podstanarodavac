@@ -1,165 +1,229 @@
--- MySQL Workbench Forward Engineering
+-- phpMyAdmin SQL Dump
+-- version 4.8.4
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1:3306
+-- Generation Time: Jun 03, 2019 at 10:44 PM
+-- Server version: 5.7.24
+-- PHP Version: 7.2.14
 
-SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
-SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
-
--- -----------------------------------------------------
--- Schema podstanarodavac
--- -----------------------------------------------------
-
--- -----------------------------------------------------
--- Schema podstanarodavac
--- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `podstanarodavac` DEFAULT CHARACTER SET utf8 ;
--- -----------------------------------------------------
--- Schema skripta
--- -----------------------------------------------------
-USE `podstanarodavac` ;
-
--- -----------------------------------------------------
--- Table `podstanarodavac`.`Oglasna_tabla`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `podstanarodavac`.`Oglasna_tabla` (
-  `IDO` INT NOT NULL,
-  `Naslov` VARCHAR(18) NULL,
-  `Tekst` VARCHAR(108) NULL,
-  PRIMARY KEY (`IDO`))
-ENGINE = InnoDB;
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
 
 
--- -----------------------------------------------------
--- Table `podstanarodavac`.`Korisnik`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `podstanarodavac`.`Korisnik` (
-  `IDK` INT NOT NULL,
-  `Ime` VARCHAR(45) NULL,
-  `Prezime` VARCHAR(45) NULL,
-  `Mail` VARCHAR(45) NULL,
-  `Lozinka` VARCHAR(45) NULL,
-  `JMBG` VARCHAR(45) NULL,
-  `BrojTelefona` VARCHAR(45) NULL,
-  `Adresa` VARCHAR(45) NULL,
-  `Tip` VARCHAR(1) NULL,
-  `Pol` VARCHAR(1) NULL,
-  `IDO` INT NOT NULL,
-  PRIMARY KEY (`IDK`),
-  INDEX `fk_Korisnik_Oglasna_tabla1_idx` (`IDO` ASC),
-  CONSTRAINT `fk_Korisnik_Oglasna_tabla1`
-    FOREIGN KEY (`IDO`)
-    REFERENCES `podstanarodavac`.`Oglasna_tabla` (`IDO`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
 
+--
+-- Database: `podstanarodavac`
+--
 
--- -----------------------------------------------------
--- Table `podstanarodavac`.`Zakup`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `podstanarodavac`.`Zakup` (
-  `IDZ` INT NOT NULL,
-  `IDValsnika` INT NOT NULL,
-  `IDStanara` INT NOT NULL,
-  `AdresaStana` VARCHAR(45) NULL,
-  `Kirija` INT NULL,
-  `TrajanjeZakupa/Mesec` INT NULL,
-  `DatumPocetkaZakupa` DATETIME NULL,
-  `Kvadratura` INT NULL,
-  `Prihvacen` TINYINT NULL,
-  PRIMARY KEY (`IDZ`, `IDValsnika`, `IDStanara`),
-  INDEX `fk_Zakup_Korisnik1_idx` (`IDValsnika` ASC),
-  INDEX `fk_Zakup_Korisnik2_idx` (`IDStanara` ASC),
-  CONSTRAINT `fk_Zakup_Korisnik1`
-    FOREIGN KEY (`IDValsnika`)
-    REFERENCES `podstanarodavac`.`Korisnik` (`IDK`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Zakup_Korisnik2`
-    FOREIGN KEY (`IDStanara`)
-    REFERENCES `podstanarodavac`.`Korisnik` (`IDK`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+-- --------------------------------------------------------
 
+--
+-- Table structure for table `korisnik`
+--
 
--- -----------------------------------------------------
--- Table `podstanarodavac`.`Racun`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `podstanarodavac`.`Racun` (
-  `IDR` INT NOT NULL,
-  `SvrhaUplate` VARCHAR(40) NULL,
-  `PozivNaBroj` VARCHAR(18) NULL,
-  `ZiroRacun` VARCHAR(30) NULL,
-  `Iznos` INT NULL,
-  `IDVlasnika` INT NOT NULL,
-  `IDStanara` INT NOT NULL,
-  PRIMARY KEY (`IDR`),
-  INDEX `fk_Racun_Korisnik1_idx` (`IDVlasnika` ASC),
-  INDEX `fk_Racun_Korisnik2_idx` (`IDStanara` ASC),
-  CONSTRAINT `fk_Racun_Korisnik1`
-    FOREIGN KEY (`IDVlasnika`)
-    REFERENCES `podstanarodavac`.`Korisnik` (`IDK`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Racun_Korisnik2`
-    FOREIGN KEY (`IDStanara`)
-    REFERENCES `podstanarodavac`.`Korisnik` (`IDK`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+DROP TABLE IF EXISTS `korisnik`;
+CREATE TABLE IF NOT EXISTS `korisnik` (
+  `IDK` int(11) NOT NULL AUTO_INCREMENT,
+  `Ime` varchar(45) DEFAULT NULL,
+  `Prezime` varchar(45) DEFAULT NULL,
+  `Mail` varchar(45) DEFAULT NULL,
+  `Lozinka` varchar(45) DEFAULT NULL,
+  `JMBG` varchar(45) DEFAULT NULL,
+  `BrojTelefona` varchar(45) DEFAULT NULL,
+  `Adresa` varchar(45) DEFAULT NULL,
+  `Tip` varchar(1) DEFAULT NULL,
+  `Pol` varchar(1) DEFAULT NULL,
+  PRIMARY KEY (`IDK`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `korisnik`
+--
 
--- -----------------------------------------------------
--- Table `podstanarodavac`.`Obavestenje_opomena`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `podstanarodavac`.`Obavestenje_opomena` (
-  `IDO` INT NOT NULL,
-  `IDValsnika` INT NOT NULL,
-  `IDStanara` INT NOT NULL,
-  `Naslov` VARCHAR(18) NULL,
-  `Tekst` VARCHAR(100) NULL,
-  `Vrsta` VARCHAR(18) NULL,
-  PRIMARY KEY (`IDO`, `IDValsnika`, `IDStanara`),
-  INDEX `fk_Obavestenje_opomena_Korisnik1_idx` (`IDValsnika` ASC),
-  INDEX `fk_Obavestenje_opomena_Korisnik2_idx` (`IDStanara` ASC),
-  CONSTRAINT `fk_Obavestenje_opomena_Korisnik1`
-    FOREIGN KEY (`IDValsnika`)
-    REFERENCES `podstanarodavac`.`Korisnik` (`IDK`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Obavestenje_opomena_Korisnik2`
-    FOREIGN KEY (`IDStanara`)
-    REFERENCES `podstanarodavac`.`Korisnik` (`IDK`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+INSERT INTO `korisnik` (`IDK`, `Ime`, `Prezime`, `Mail`, `Lozinka`, `JMBG`, `BrojTelefona`, `Adresa`, `Tip`, `Pol`) VALUES
+(1, 'Nikola', 'Dimitrijević', 'alokindimitrijevic@gmail.com', '7890', '1912997750015', '0604191299', 'Kladovska 4 11000 Beograd', 'S', 'M'),
+(2, 'Podstanar', 'Podstanaric', 'podstanar@gmail.com', 'podstanar', '1111111111111', '0611111111', 'Podstanara 1 11111 Beograd', 'P', 'M'),
+(4, 'Podstanar 1', 'Podstanaric 1', 'podstanar1@gmail.com', 'podstanar1', '1111111111111', '0601111', 'Podstanara 1 11000 Beograd', 'P', 'M'),
+(6, 'Stanodavac 1', 'Stanodavcic 1', 'stanodavac@gmail.com', 'stanodavac', '1111111111112', '06011111', 'Stanodavca 1 11111 Beograd', 'S', 'M');
 
+-- --------------------------------------------------------
 
--- -----------------------------------------------------
--- Table `podstanarodavac`.`Kvar`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `podstanarodavac`.`Kvar` (
-  `IDKvar` INT NOT NULL,
-  `Naslov` VARCHAR(18) NULL,
-  `Opis` VARCHAR(100) NULL,
-  `IDVlasnika` INT NOT NULL,
-  `IDStanara` INT NOT NULL,
+--
+-- Table structure for table `kvar`
+--
+
+DROP TABLE IF EXISTS `kvar`;
+CREATE TABLE IF NOT EXISTS `kvar` (
+  `IDKvar` int(11) NOT NULL AUTO_INCREMENT,
+  `Naslov` varchar(18) DEFAULT NULL,
+  `Opis` varchar(100) DEFAULT NULL,
+  `IDVlasnika` int(11) NOT NULL,
+  `IDStanara` int(11) NOT NULL,
   PRIMARY KEY (`IDKvar`),
-  INDEX `fk_Kvar_Korisnik1_idx` (`IDVlasnika` ASC),
-  INDEX `fk_Kvar_Korisnik2_idx` (`IDStanara` ASC),
-  CONSTRAINT `fk_Kvar_Korisnik1`
-    FOREIGN KEY (`IDVlasnika`)
-    REFERENCES `podstanarodavac`.`Korisnik` (`IDK`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Kvar_Korisnik2`
-    FOREIGN KEY (`IDStanara`)
-    REFERENCES `podstanarodavac`.`Korisnik` (`IDK`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+  KEY `fk_Kvar_Korisnik1_idx` (`IDVlasnika`),
+  KEY `fk_Kvar_Korisnik2_idx` (`IDStanara`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `kvar`
+--
 
-SET SQL_MODE=@OLD_SQL_MODE;
-SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+INSERT INTO `kvar` (`IDKvar`, `Naslov`, `Opis`, `IDVlasnika`, `IDStanara`) VALUES
+(4, 'Kvar', 'njdaikndke', 1, 2),
+(5, 'Kvar', 'kvaric', 1, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `obavestenje_opomena`
+--
+
+DROP TABLE IF EXISTS `obavestenje_opomena`;
+CREATE TABLE IF NOT EXISTS `obavestenje_opomena` (
+  `IDO` int(11) NOT NULL AUTO_INCREMENT,
+  `IDVlasnika` int(11) NOT NULL,
+  `IDStanara` int(11) NOT NULL,
+  `Naslov` varchar(18) DEFAULT NULL,
+  `Tekst` varchar(100) DEFAULT NULL,
+  `Vrsta` varchar(18) DEFAULT NULL,
+  PRIMARY KEY (`IDO`,`IDVlasnika`,`IDStanara`),
+  KEY `fk_Obavestenje_opomena_Korisnik1_idx` (`IDVlasnika`),
+  KEY `fk_Obavestenje_opomena_Korisnik2_idx` (`IDStanara`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `obavestenje_opomena`
+--
+
+INSERT INTO `obavestenje_opomena` (`IDO`, `IDVlasnika`, `IDStanara`, `Naslov`, `Tekst`, `Vrsta`) VALUES
+(6, 1, 2, '29. Novembra 26', 'Tekst', 'Obaveštenje'),
+(9, 1, 1, 'kudfk', 'uhuedw', 'Obaveštenje');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `oglasna_tabla`
+--
+
+DROP TABLE IF EXISTS `oglasna_tabla`;
+CREATE TABLE IF NOT EXISTS `oglasna_tabla` (
+  `IDO` int(11) NOT NULL AUTO_INCREMENT,
+  `Naslov` varchar(18) DEFAULT NULL,
+  `Tekst` varchar(108) DEFAULT NULL,
+  `IDVlasnika` int(11) NOT NULL,
+  PRIMARY KEY (`IDO`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `oglasna_tabla`
+--
+
+INSERT INTO `oglasna_tabla` (`IDO`, `Naslov`, `Tekst`, `IDVlasnika`) VALUES
+(7, 'Objava', 'Vau ovo radi', 1),
+(11, 'ferdvg', 'grrege', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `racun`
+--
+
+DROP TABLE IF EXISTS `racun`;
+CREATE TABLE IF NOT EXISTS `racun` (
+  `IDR` int(11) NOT NULL AUTO_INCREMENT,
+  `SvrhaUplate` varchar(40) DEFAULT NULL,
+  `PozivNaBroj` varchar(18) DEFAULT NULL,
+  `ZiroRacun` varchar(30) DEFAULT NULL,
+  `Iznos` int(11) DEFAULT NULL,
+  `IDVlasnika` int(11) NOT NULL,
+  `IDStanara` int(11) NOT NULL,
+  `Placen` tinyint(4) NOT NULL,
+  PRIMARY KEY (`IDR`),
+  KEY `fk_Racun_Korisnik1_idx` (`IDVlasnika`),
+  KEY `fk_Racun_Korisnik2_idx` (`IDStanara`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `racun`
+--
+
+INSERT INTO `racun` (`IDR`, `SvrhaUplate`, `PozivNaBroj`, `ZiroRacun`, `Iznos`, `IDVlasnika`, `IDStanara`, `Placen`) VALUES
+(4, 'Svrha', '123', '123456', 1000, 1, 1, 1),
+(7, 'Svrhakjwfkf', '123', '123456', 9000, 1, 2, 1),
+(8, 'Svrhakjwfkf', '123', '123456', 9000, 1, 2, 0),
+(9, 'lflswd', 'hjbdhj', 'kjsndkj', 7000, 1, 2, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `zakup`
+--
+
+DROP TABLE IF EXISTS `zakup`;
+CREATE TABLE IF NOT EXISTS `zakup` (
+  `IDZ` int(11) NOT NULL AUTO_INCREMENT,
+  `IDVlasnika` int(11) NOT NULL,
+  `IDStanara` int(11) NOT NULL,
+  `AdresaStana` varchar(45) DEFAULT NULL,
+  `Kirija` int(11) DEFAULT NULL,
+  `TrajanjeZakupa` int(11) DEFAULT NULL,
+  `DatumPocetkaZakupa` datetime DEFAULT NULL,
+  `Kvadratura` int(11) DEFAULT NULL,
+  `Prihvacen` tinyint(4) DEFAULT NULL,
+  PRIMARY KEY (`IDZ`,`IDVlasnika`,`IDStanara`),
+  KEY `fk_Zakup_Korisnik1_idx` (`IDVlasnika`),
+  KEY `fk_Zakup_Korisnik2_idx` (`IDStanara`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `zakup`
+--
+
+INSERT INTO `zakup` (`IDZ`, `IDVlasnika`, `IDStanara`, `AdresaStana`, `Kirija`, `TrajanjeZakupa`, `DatumPocetkaZakupa`, `Kvadratura`, `Prihvacen`) VALUES
+(0, 1, 1, 'Kladovska 4 11000 Beograd', 8000, 12, '2019-05-15 00:00:00', 50, 0),
+(5, 1, 2, 'Podstanara', 8000, 12, '2019-06-12 00:00:00', 50, 1),
+(6, 6, 4, 'Adresa Stana', 5000, 13, '2019-06-11 00:00:00', 30, 0);
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `kvar`
+--
+ALTER TABLE `kvar`
+  ADD CONSTRAINT `fk_Kvar_Korisnik1` FOREIGN KEY (`IDVlasnika`) REFERENCES `korisnik` (`IDK`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_Kvar_Korisnik2` FOREIGN KEY (`IDStanara`) REFERENCES `korisnik` (`IDK`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `obavestenje_opomena`
+--
+ALTER TABLE `obavestenje_opomena`
+  ADD CONSTRAINT `fk_Obavestenje_opomena_Korisnik1` FOREIGN KEY (`IDVlasnika`) REFERENCES `korisnik` (`IDK`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_Obavestenje_opomena_Korisnik2` FOREIGN KEY (`IDStanara`) REFERENCES `korisnik` (`IDK`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `racun`
+--
+ALTER TABLE `racun`
+  ADD CONSTRAINT `fk_Racun_Korisnik1` FOREIGN KEY (`IDVlasnika`) REFERENCES `korisnik` (`IDK`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_Racun_Korisnik2` FOREIGN KEY (`IDStanara`) REFERENCES `korisnik` (`IDK`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `zakup`
+--
+ALTER TABLE `zakup`
+  ADD CONSTRAINT `fk_Zakup_Korisnik1` FOREIGN KEY (`IDVlasnika`) REFERENCES `korisnik` (`IDK`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_Zakup_Korisnik2` FOREIGN KEY (`IDStanara`) REFERENCES `korisnik` (`IDK`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
