@@ -23,10 +23,11 @@ class ModelKorisnik extends CI_Model {
     
     public function __construct() {
         parent::__construct();
-        $this->korisnik=NULL;
+        $this->korisnik = NULL;
     }
     
     public function dohvatiKorisnika($kor_email){
+        $this->korisnik = NULL;
         $result = $this->db->where('Mail', $kor_email)->get('korisnik');
         $kor = $result->row();
         if ($kor != NULL) {
