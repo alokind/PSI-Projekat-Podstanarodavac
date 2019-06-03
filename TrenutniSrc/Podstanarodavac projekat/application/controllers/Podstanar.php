@@ -40,7 +40,7 @@ class Podstanar extends CI_Controller{
     }
     
     public function naUloge(){
-        $this->naProfil();
+        $this->load->view("podstanar/ulogeStanara.php");
     }
     
     public function naOglasnu($data=null){
@@ -63,14 +63,6 @@ class Podstanar extends CI_Controller{
     
     //Redirekcije na uloge podstanara://---------------------------------------------------------
     public function zakupiStanRedirect($data=null){
-        $korisnik = $this->session->userdata('korisnik');
-        $data['korisnik'] = $korisnik;
-        $ugovorPrihvacen = $this->ModelZakup->ugovorPrihvacen($this->session->userdata('korisnik')->IDK);
-        if($ugovorPrihvacen){
-           $data['sklopljenUgovor'] = "true"; 
-        }else{
-           $data['sklopljenUgovor'] = "false"; 
-        }
         $postojiUgovor = $this->ModelZakup->postojiUgovorZaStanara($this->session->userdata('korisnik')->IDK);
         if($postojiUgovor == false){
             $data['mozeDaPrihvati']='false';
@@ -142,13 +134,6 @@ class Podstanar extends CI_Controller{
         }
         redirect("Podstanar/naUloge");
     }
-    
- 
-    
-    
-    
-    
-    
     
     
     

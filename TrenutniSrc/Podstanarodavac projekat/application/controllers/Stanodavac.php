@@ -96,25 +96,25 @@ class Stanodavac extends CI_Controller {
 	 //--------------------------------------------------------------------------
     //--------------------------------------------------------------------------
 	
-	
-	/*
-	opis fja : logout
-				okaciNaOglasnuV
-				uzmiObavestenje
-				otvoriUnesiRacun
-				unesiRacun
-	autor: Bojana Krivokapic
+    /*
+    opis fja : logout
+		okaciNaOglasnuV
+		uzmiObavestenje
+		otvoriUnesiRacun
+		unesiRacun
+    autor: Bojana Krivokapic
 				
-	*/
-	//fja za odjavljivanje sa sistema pritiskom ikonice logout kada se nalazimo 
-	//u nekoj od funkcionalnosti stanodavca
+    */
+    //fja za odjavljivanje sa sistema pritiskom ikonice logout kada se nalazimo 
+    //u nekoj od funkcionalnosti stanodavca
     public function logout(){
         $this->session->unset_userdata('korisnik');
         $this->session->sess_destroy();
         redirect('Gost');
     }
-	//fja koja cuva ono sto zelimo da okacimo na oglasnu tablu (unete podatke)
-	public function okaciNaOglasnuV(){
+    
+    //fja koja cuva ono sto zelimo da okacimo na oglasnu tablu (unete podatke)
+    public function okaciNaOglasnuV(){
         $naslov = $this->input->post('naslovObav');
         $tekst = $this->input->post('tekstObav');
         $this->ModelOglasnaTabla->cuvajObavestenje($naslov,$tekst);
@@ -123,18 +123,17 @@ class Stanodavac extends CI_Controller {
 	//fja koja sluzi za uzimanje sacuvanih podataka iz prethodne metode kako bi
 	//se prikazala  na samoj oglasnoj tabli
     
-        //Ovde mora da se trazi po IDVlasnika za tu oglasnu tablu
-	public function uzmiObavestenje(){
-            $query=$this->db->query("select * from oglasna_tabla");
-            $result['result']=$query->result();
-             $this->load->view("oglasnaTabla.php", $result);
-            
-        }
+    //Ovde mora da se trazi po IDVlasnika za tu oglasnu tablu
+    public function uzmiObavestenje(){
+        $query=$this->db->query("select * from oglasna_tabla");
+        $result['result']=$query->result();
+        $this->load->view("oglasnaTabla.php", $result);     
+    }
         
         
-	//fja koja treba da se izvrsi pri samom otvaranju stranice unesiteRacun zato
-	//sto je njen zadatak da automatski stavi u padajuci meni vlasnikove podstanare
-	public function otvoriUnesiRacun(){
+    //fja koja treba da se izvrsi pri samom otvaranju stranice unesiteRacun zato
+    //sto je njen zadatak da automatski stavi u padajuci meni vlasnikove podstanare
+    public function otvoriUnesiRacun(){
        
         $stan=$this->session->userdata('korisnik');
         $stanodavac = $stan->IDK;
@@ -150,8 +149,9 @@ class Stanodavac extends CI_Controller {
         $data['result'] = $rs;
         $this->load->view("unesiteRacun.php", $data);
        
-        }
-//fja u kojoj cuvamo podatke koje treba da se dostave podstanaru o zadatom racunu    
+    }
+    
+    //fja u kojoj cuvamo podatke koje treba da se dostave podstanaru o zadatom racunu    
     public function unesiRacun(){
         $stan=$this->session->userdata('korisnik');
         $stanodavac = $stan->IDK;

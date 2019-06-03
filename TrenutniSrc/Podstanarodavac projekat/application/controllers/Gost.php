@@ -15,11 +15,29 @@
  */
 
 class Gost extends CI_Controller{
+    private $admin_email = 'podstanarodavac@gmail.com';
+    
     //Konstruktor
     public function __construct() {
         parent::__construct();
         $this->load->model("ModelKorisnik");
         $this->load->library('form_validation');
+        $this->load->library('email');
+        
+       //SMTP & mail configuration
+        $config = array(
+            'protocol'  => 'smtp',
+            'smtp_host' => 'ssl://smtp.googlemail.com',
+            'smtp_port' => 465,
+            'smtp_user' => 'podstanarodavac@gmail.com',
+            'smtp_pass' => 'ata45ktu.1',
+            'mailtype'  => 'html',
+            'charset'   => 'utf-8'
+        );
+        $this->email->initialize($config);
+        //$this->email->set_mailtype("html");
+        $this->email->set_newline("\r\n");
+
     }
     
     //GLAVNE METODE
@@ -27,6 +45,7 @@ class Gost extends CI_Controller{
     //index metoda
     public function index() {
         $this->load->view('index.php');
+        //$this->naPocetnu();
     }
     
     //Metoda za odlazak na pocetnu
@@ -57,7 +76,7 @@ class Gost extends CI_Controller{
         $this->form_validation->set_rules("passwd", "Password", "required");
         
         //Poruka ako je neko polje ostalo prazno
-        $this->form_validation->set_message("required","Polje {field} je ostalo prazno.");
+        $this->form_validation->set_message("required", "Polje {field} je ostalo prazno.");
         
         
         if ($this->form_validation->run()) {
@@ -112,10 +131,6 @@ class Gost extends CI_Controller{
             $pol = $this->input->post('pol');
             $uloga = $this->input->post('role');
             
-            if (!($ime && $prezime && $email && $lozinka && $matbr && $mobilni && $adresa && $pol && $uloga)) {
-                $this->neuspesnaRegistracija("Popunite sva polja");
-            }
-            
             $korisnik = array (
                 'Ime' => $ime,
                 'Prezime' => $prezime,
@@ -134,9 +149,32 @@ class Gost extends CI_Controller{
                 $this->neuspesnaRegistracija("Korisnik sa datim emailom ili jmbg-om vec postoji");
             } else { //Prelazak dalje u zavisnosti od unosa
                 $this->ModelKorisnik->dodajKorisnika($korisnik);
+                
+                $this->posaljiEmail($korisnik);
+
                 $this->uspesnaRegistracija("Uspesno ste se registrovali!");
             }  
         }
+    }
+    
+    //Poruka dobrodoslice i njeno slanje na mail
+    public function posaljiEmail($korisnik) {
+                $ime = $korisnik['Ime'];
+                $prezime = $korisnik['Prezime'];
+                $lozinka = $korisnik['Lozinka'];
+                $email = $korisnik['Mail'];
+                
+                $poruka = 'Dobrodosli ' . $ime . ' ' . $prezime . '. Vasa lozinka je: ' . $lozinka . '. Srecan rad!'; 
+                $subject = 'Dobrodoslica';
+                
+                $this->email->from($this->admin_email, 'Podstanarodavac');
+                $this->email->to($email);
+
+                $this->email->subject($subject);
+                $this->email->message($poruka);
+
+                $this->email->send();
+                echo $this->email->print_debugger();
     }
     
     //Metoda za prikaz greske pri neuspesnoj registraciji
@@ -149,6 +187,39 @@ class Gost extends CI_Controller{
     public function uspesnaRegistracija($poruka) {
         $this->session->set_flashdata('succ_reg', $poruka);
         $this->naPocetnu();
+    }
+    //--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    
+    //METODE ZA DOBIJANJE NOVE LOZINKE
+    //--------------------------------------------------------------------------
+    //Metoda za odlazak na stranicu za dobijanje lozinke putem maila
+    public function naZaboravljenuLozinku() {
+        $this->load->view("zaboravljenaLozinka.php");
+    }
+    
+    //Metoda za dobijanje lozinke putem maila
+    public function proslediLozinku() {
+        if ($this->input->post('zahtevajLozinku')) {
+            $email = $this->input->post('email');
+            $this->ModelKorisnik->dohvatiKorisnika($email);
+        
+            $trenutni_korisnik = $this->ModelKorisnik->korisnik;
+            $lozinka = $trenutni_korisnik->Lozinka;
+            
+            $subject = 'Lozinka';
+            $poruka = 'Vasa lozinka je: ' . $lozinka;
+         
+            $this->email->from($this->admin_email, 'Podstanarodavac');
+            $this->email->to($email);
+            $this->email->subject($subject);
+            $this->email->message($poruka);
+            
+            $this->email->send();
+            echo $this->email->print_debugger();
+            
+            $this->naPocetnu();
+        }
     }
     //--------------------------------------------------------------------------
     //--------------------------------------------------------------------------
