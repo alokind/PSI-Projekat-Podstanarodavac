@@ -29,13 +29,12 @@ class ModelZakup extends CI_Model{
     
     
     public function zakupiStan($podstanarID,$prihvacen){
-        //Fejkcina klasicna, jbg...
         $this->db->from('zakup');
         $this->db->where("IDStanara",$podstanarID);
         $query = $this->db->get();
         $result = $query->row();
         $vlasnikID = $result->IDVlasnika;
-        $this->db->query("UPDATE zakup SET Prihvacen='$prihvacen' WHERE IDVlasnika='1' AND IDStanara='$podstanarID'");
+        $this->db->query("UPDATE zakup SET Prihvacen='$prihvacen' WHERE IDVlasnika='$vlasnikID' AND IDStanara='$podstanarID'");
     }
         
     
