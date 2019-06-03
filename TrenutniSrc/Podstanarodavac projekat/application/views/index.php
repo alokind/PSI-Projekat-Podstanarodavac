@@ -31,8 +31,8 @@
 	<body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
 		<div class="container">
-		  <a class="navbar-brand" href="<?php echo site_url('Gost/naPocetnu') ?>">
-			<img src="../../public/images/logo.png" alt="logo" style="width:40px;">
+		  <a class="navbar-brand" href="naPocetnu">
+			<img src="<?php echo $this->config->item('base_url'); ?>/public/images/logo.png" alt="logo" style="width:40px;">
 		  </a>
 		  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
@@ -64,21 +64,21 @@
 			</ol>
 			<div class="carousel-inner" role="listbox">
 			  <!-- Slide One - Set the background image for this slide in the line below -->
-			  <div class="carousel-item active" style="background-image: url('../../public/images/prva.jpg')">
+			  <div class="carousel-item active" style="background-image: url('<?php echo $this->config->item('base_url'); ?>/public/images/prva.jpg')">
 				<!--<div class="carousel-caption d-none d-md-block">
 				  <h3 class="display-4">First Slide</h3>
 				  <p class="lead">This is a description for the first slide.</p>
 				</div> -->
 			  </div>
 			  <!-- Slide Two - Set the background image for this slide in the line below -->
-			  <div class="carousel-item" style="background-image: url('../../public/images/druga.jpg')">
+			  <div class="carousel-item" style="background-image: url('<?php echo $this->config->item('base_url'); ?>/public/images/druga.jpg')">
 				<!--<div class="carousel-caption d-none d-md-block">
 				  <h3 class="display-4">Second Slide</h3>
 				  <p class="lead">This is a description for the second slide.</p>
 				</div> -->
 			  </div>
 			  <!-- Slide Three - Set the background image for this slide in the line below -->
-			  <div class="carousel-item" style="background-image: url('../../public/images/treca.jpg')">
+			  <div class="carousel-item" style="background-image: url('<?php echo $this->config->item('base_url'); ?>/public/images/treca.jpg')">
 				<!--<div class="carousel-caption d-none d-md-block">
 				  <h3 class="display-4">Third Slide</h3>
 				  <p class="lead">This is a description for the third slide.</p>
@@ -97,13 +97,23 @@
 		</header>
 		<!-- Page Content -->
 		<section class="py-5">
-		  <div class="container">
-			<h1 class="font-weight-light">O aplikaciji</h1>
-			<p class="lead" align="justify">Ako vlasnik stana u kojem živite ne živi blizu Vas, a želite da imate koncizan pregled svake Vaše saradnje,
-			ili ako jednostavno želite da izbegnete ličnu komunikaciju sa njim ovo je pravo mesto za Vas! Bez čekanja, nepotrebnog
-			zvanja telefonom i svakako podsećanja na obaveze podstanara, ovo je vrlo korisna aplikacija i za stanodavce.
-			Zato ne gubite vreme i već danas se registrujte!</p>
-		  </div>
+                    <div class="container">
+                          <h1 class="font-weight-light">O aplikaciji</h1>
+                          <p class="lead" align="justify">Ako vlasnik stana u kojem živite ne živi blizu Vas, a želite da imate koncizan pregled svake Vaše saradnje,
+                          ili ako jednostavno želite da izbegnete ličnu komunikaciju sa njim ovo je pravo mesto za Vas! Bez čekanja, nepotrebnog
+                          zvanja telefonom i svakako podsećanja na obaveze podstanara, ovo je vrlo korisna aplikacija i za stanodavce.
+                          Zato ne gubite vreme i već danas se registrujte!</p>
+                    </div>
+                    <div>
+                        <?php
+                                $greska = $this->session->flashdata('succ_reg');
+                                if (isset($greska)) {
+                                    echo '<div class="alert alert-warning" align="center">';
+                                    echo $greska;
+                                    echo '</div>';
+                                }
+                         ?>
+                    </div>
 		</section>
                 
         <br><br>
@@ -111,7 +121,7 @@
           <div class="container">
             <p class="m-0 text-center text-white">Copyright © 2019, Kakav tim - strašan tim, Odsek za softversko inženjerstvo Elektrotehničkog fakulteta Univerziteta u Beogradu
             <a href="http://etf.bg.ac.rs">
-               <img src="../../public/images/etf_logo.png" height='30px' width='30px'>
+               <img src="public/images/etf_logo.png" height='30px' width='30px'>
             </a>
                 </p>
           </div>
