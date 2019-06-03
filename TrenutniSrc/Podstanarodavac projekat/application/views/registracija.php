@@ -42,7 +42,7 @@
 		  </div>
 		</div>
 	</nav>
-            br><br><br><br>
+            <br><br><br><br>
             <div class="container">
                   <div class="row">
                     <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
@@ -50,17 +50,18 @@
                             <div class="card-body" align="left">
                                   <h5 class="card-title text-center">Unesite podatke za registraciju: </h5><hr><br>
                                   <form name="registracija_forma" method=post action="<?php echo site_url('Gost/registrujSe')?>">
-                                        <input type="text" name="name" class="form-control" placeholder="Ime"> <br>
-                                        <input type="text" name="lastname" class="form-control" placeholder="Prezime"> <br>
-                                        <input type="email" name="mail" class="form-control" placeholder="Mejl"> <br>
-                                        <input type="password" name="password" class="form-control" placeholder="Password"> <br>
-                                        <input type="text" name="jmbg" class="form-control" placeholder="JMBG"> <br>
-                                        <input type="text" name="phone" class="form-control" placeholder="Broj telefona"> <br>
+                                        <input type="text" name="name" class="form-control" placeholder="Ime" required> <br>
+                                        <input type="text" name="lastname" class="form-control" placeholder="Prezime" required> <br>
+                                        <input type="email" name="mail" class="form-control" placeholder="Mejl" required> <br>
+                                        <input type="password" name="password" class="form-control" placeholder="Password" pattern=".{5,}" required title="Unesite najmanje 5 karaktera"> <br>
+                                        <input type="text" name="adress" class="form-control" placeholder="Adresa" required> <br>
+                                        <input type="text" name="jmbg" class="form-control" placeholder="JMBG" required> <br>
+                                        <input type="text" name="phone" class="form-control" placeholder="Broj telefona" required> <br>
                                         <strong>&nbsp;Pol &nbsp;&nbsp;&nbsp;&nbsp;</strong>
-                                            Ženski <input type="radio" name="pol" value="zenski">
-                                            Muski <input type="radio" name="pol" value="muski"> <br><br>
+                                            Ženski <input type="radio" name="pol" value="zenski" required>
+                                            Muški <input type="radio" name="pol" value="muski"required> <br><br>
                                             <strong>&nbsp;Uloga </strong>
-                                            <select class="form-control" name="role" style="width: 70%">
+                                            <select class="form-control" name="role" style="width: 70%" required>
                                                     <option>Vlasnik</option>
                                                     <option>Stanar</option>
                                             </select>
@@ -72,12 +73,12 @@
                             </div>
                           </div>
                             <?php
-                            $greska = $this->session->flashdata('error_reg_msg');
-                            if (isset($greska)) {
-                                echo '<div class="alert alert-warning" align="center">';
-                                echo $greska;
-                                echo '</div>';
-                            }
+                                $greska = $this->session->flashdata('error_reg_msg');
+                                //if (isset($greska)) {
+                                    echo '<div class="alert alert-warning" align="center">';
+                                    echo $greska;
+                                    echo '</div>';
+                               // }
                             ?>
                     </div>
                   </div>

@@ -54,7 +54,7 @@
                                           <input type="password" name="passwd" class="form-control" placeholder="Password"> <br>
 
                                           <button class="btn btn-lg btn-success btn-block text-uppercase" type="submit">Unesi podatke</button><hr>
-                                          <a href="resetSifre.html" class="btn btn-lg btn-primary btn-block text-uppercase">Zaboravili ste šifru?</a>
+                                          <a href="<?php echo site_url('Gost/naZaboravljenuLozinku') ?>" class="btn btn-lg btn-primary btn-block text-uppercase">Zaboravili ste šifru?</a>
                                   </form>
                                   <a href="<?php echo site_url('Gost/naRegistraciju') ?>" class="btn btn-md btn-primary btn-block text-uppercase" style="width :70%;">Niste registrovani?</a>
                             </div>
