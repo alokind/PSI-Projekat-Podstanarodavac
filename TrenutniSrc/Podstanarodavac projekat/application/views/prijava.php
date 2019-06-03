@@ -77,7 +77,7 @@
           <div class="container">
             <p class="m-0 text-center text-white">Copyright © 2019, Kakav tim - strašan tim, Odsek za softversko inženjerstvo Elektrotehničkog fakulteta Univerziteta u Beogradu
             <a href="http://etf.bg.ac.rs">
-               <img src="../../public/images/etf_logo.png" height='30px' width='30px'>
+               <img src="<?php echo $this->config->item('base_url'); ?>/public/images/etf_logo.png" height='30px' width='30px'>
             </a>
                 </p>
           </div>
