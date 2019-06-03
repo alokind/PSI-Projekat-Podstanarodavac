@@ -1,5 +1,4 @@
 <?php
-
 /*
  * 
  * Opis:    - Klasa kontrolera za akcije Stanodavac
@@ -9,7 +8,6 @@
  *      naPrijavu, neuspesnaPrijava, ulogujSe, 
  * Vasilije Becic
  */
-
 class Stanodavac extends CI_Controller {
     private $aktivanKorisnik = null;
     
@@ -19,7 +17,7 @@ class Stanodavac extends CI_Controller {
         $this->load->model("ModelKorisnik");
         $this->load->library('form_validation');
         $this->aktivanKorisnik = $this->session->userdata('korisnik');
-	$this->load->model('ModelOglasnaTabla');
+		$this->load->model('ModelOglasnaTabla');
         $this->load->model('ModelRacun');
         $this->load->model('ModelZakup');
         $this->load->model('ModelKvar');
@@ -42,79 +40,26 @@ class Stanodavac extends CI_Controller {
     
     //--------------------------------------------------------------------------
     //--------------------------------------------------------------------------
-
-    
-    //METODE ZA PRIJAVU    Otvoreno pitanje - da li je potrebno da stoji uopste ovo dugme
-    //--------------------------------------------------------------------------
-    //Metoda za odlazak na stranicu prijavu
-    public function naPrijavu() {
-        $this->load->view('prijava.php');   
-    }
-
-    //Metoda za prikaz greske pri neuspesnoj prijavi
-    public function neuspesnaPrijava($poruka = NULL) {
-        $this->session->set_flashdata('error_login_msg', $poruka);
-        $this->naPrijavu();
-    }
-    
-    //Metoda za prijavljivanje - radjena na nacin sa form_validation->run()
-    public function ulogujse() {
-        //Obavezni email i password
-        $this->form_validation->set_rules("email", "Email", "required");
-        $this->form_validation->set_rules("passwd", "Password", "required");
-        
-        //Poruka ako je neko polje ostalo prazno
-        $this->form_validation->set_message("required","Polje {field} je ostalo prazno.");
-        
-        $email = $this->input->post('email');
-        $lozinka = $this->input->post('passwd');
-        
-        if ($this->form_validation->run()) {
-            //Provera da li postoji korisnik sa datim emailom i odredjivanje eventualne greske
-            if (!$this->ModelKorisnik->dohvatiKorisnika($email)) {
-                $this->neuspesnaPrijava("Neispravan email");
-                
-            } else if (!$this->ModelKorisnik->ispravnaLozinka($lozinka)) {
-                $this->neuspesnaPrijava("Neispravna lozinka");
-                
-            } else {
-                //Nakon uspesne prijave, pamti se koji je korisnik u sesiji
-                $korisnik = $this->ModelKorisnik->dohvacenKorisnik();
-                $this->session->set_userdata('korisnik', $korisnik);
-                
-                //U zavisnosti od tipa korisnika, odlazi se na odgovarajuci kontroler
-                if ($korisnik->Tip == 'P') {
-                    redirect("Podstanar");
-                } else {
-                    redirect("Stanodavac");
-                }
-            }
-        } else {
-            $this->neuspesnaPrijava("Popunite prazna polja");
-        }
-    }
-	 //--------------------------------------------------------------------------
-    //--------------------------------------------------------------------------
 	
-    /*
-    opis fja : logout
-		okaciNaOglasnuV
-		uzmiObavestenje
-		otvoriUnesiRacun
-		unesiRacun
-    autor: Bojana Krivokapic
+	
+	/*
+	opis fja : logout
+				okaciNaOglasnuV
+				uzmiObavestenje
+				otvoriUnesiRacun
+				unesiRacun
+	autor: Bojana Krivokapic
 				
-    */
-    //fja za odjavljivanje sa sistema pritiskom ikonice logout kada se nalazimo 
-    //u nekoj od funkcionalnosti stanodavca
+	*/
+	//fja za odjavljivanje sa sistema pritiskom ikonice logout kada se nalazimo 
+	//u nekoj od funkcionalnosti stanodavca
     public function logout(){
         $this->session->unset_userdata('korisnik');
         $this->session->sess_destroy();
         redirect('Gost');
     }
-    
-    //fja koja cuva ono sto zelimo da okacimo na oglasnu tablu (unete podatke)
-    public function okaciNaOglasnuV(){
+	//fja koja cuva ono sto zelimo da okacimo na oglasnu tablu (unete podatke)
+	public function okaciNaOglasnuV(){
         $naslov = $this->input->post('naslovObav');
         $tekst = $this->input->post('tekstObav');
         $this->ModelOglasnaTabla->cuvajObavestenje($naslov,$tekst);
@@ -123,17 +68,18 @@ class Stanodavac extends CI_Controller {
 	//fja koja sluzi za uzimanje sacuvanih podataka iz prethodne metode kako bi
 	//se prikazala  na samoj oglasnoj tabli
     
-    //Ovde mora da se trazi po IDVlasnika za tu oglasnu tablu
-    public function uzmiObavestenje(){
-        $query=$this->db->query("select * from oglasna_tabla");
-        $result['result']=$query->result();
-        $this->load->view("oglasnaTabla.php", $result);     
-    }
+        //Ovde mora da se trazi po IDVlasnika za tu oglasnu tablu
+	public function uzmiObavestenje(){
+            $query=$this->db->query("select * from oglasna_tabla");
+            $result['result']=$query->result();
+             $this->load->view("oglasnaTabla.php", $result);
+            
+        }
         
         
-    //fja koja treba da se izvrsi pri samom otvaranju stranice unesiteRacun zato
-    //sto je njen zadatak da automatski stavi u padajuci meni vlasnikove podstanare
-    public function otvoriUnesiRacun(){
+	//fja koja treba da se izvrsi pri samom otvaranju stranice unesiteRacun zato
+	//sto je njen zadatak da automatski stavi u padajuci meni vlasnikove podstanare
+	public function otvoriUnesiRacun(){
        
         $stan=$this->session->userdata('korisnik');
         $stanodavac = $stan->IDK;
@@ -149,9 +95,8 @@ class Stanodavac extends CI_Controller {
         $data['result'] = $rs;
         $this->load->view("unesiteRacun.php", $data);
        
-    }
-    
-    //fja u kojoj cuvamo podatke koje treba da se dostave podstanaru o zadatom racunu    
+        }
+//fja u kojoj cuvamo podatke koje treba da se dostave podstanaru o zadatom racunu    
     public function unesiRacun(){
         $stan=$this->session->userdata('korisnik');
         $stanodavac = $stan->IDK;
@@ -203,7 +148,6 @@ class Stanodavac extends CI_Controller {
         $this->form_validation->set_rules('kvadratura','Kvadratura','required|is_natural_no_zero');
         $this->form_validation->set_rules('mejl','Mejl','required|valid_email');
         
-
         if($this->form_validation->run()==FALSE){
             $data['tipPoruke']= 'warning';
             $data['poruka']= 'validation';
@@ -264,7 +208,6 @@ class Stanodavac extends CI_Controller {
         $vlasnik = $this->ModelKorisnik->dohvatiKorisnikaById($vlasnikId);
         $stanar = $this->ModelKorisnik->dohvatiKorisnikaById($stanarId);
         $zakup = $this->ModelZakup->dohvatiZakupById($vlasnikId, $stanarId);
-
         $this->load->library('Pdf');
         $pdf = new Pdf('P', 'mm', 'A4', false, 'UTF-8', false);
         $pdf->SetTitle('Ugovor o zakupu stana');
@@ -273,14 +216,11 @@ class Stanodavac extends CI_Controller {
         $pdf->SetAutoPageBreak(true);
         $pdf->SetAuthor('Podstanarodavac');
         $pdf->SetDisplayMode('real', 'default');
-
         $pdf->AddPage();
-
         $html =
                 '
                 <h2 align="center">UGOVOR O ZAKUPU STANA</h2>
                         <p><br><br></p>
-
                         <h3 align="center">Član 1</h3>
                 <p align="justify">
                         Zaključen dana '.date("d.m.Y.").' godine između:<br><br>
@@ -350,10 +290,8 @@ class Stanodavac extends CI_Controller {
                 </div>
                 <br>
                 <br>';
-
         $pdf->writeHTML($html, true, false, true, false, '');
         $pdf->Output('Ugovor o zakupu stana.pdf', 'D');
-
     }
     
     public function unesiteRacun(){
@@ -383,7 +321,6 @@ class Stanodavac extends CI_Controller {
                 $poziv = $this->input->post('pozivNaBroj');
                 $brRacuna = $this->input->post('brRacuna');
                 $iznosRacuna = $this->input->post('iznosRacuna');
-
                 $input = array('SvrhaUplate'=>$svrha,'PozivNaBroj'=> $poziv, 'ZiroRacun'=>$brRacuna, 'Iznos'=>$iznosRacuna,'IDVlasnika'=>$stanodavac,'IDStanara'=>$podstanar );
                 $this->ModelRacun->cuvajRacun($input);
                 $data['tipPoruke']= 'success';
@@ -393,7 +330,6 @@ class Stanodavac extends CI_Controller {
                 $data['tipPoruke']= 'warning';
                 $data['poruka']= 'Polje Podstanar je obavezno.';
             }
-
             $this->unesiteRacunPg($data);
         }
     }
@@ -424,7 +360,6 @@ class Stanodavac extends CI_Controller {
         $this->form_validation->set_message('is_natural_no_zero', 'Polje {field} je obavezno.');
         $this->form_validation->set_message('max_length', 'Polje {field} može imati najviše {param} karaktera.');
         $this->form_validation->set_message('required', 'Polje {field} je obavezno.');
-
         
         //$this->form_validation->set_rules('podstnar','Podstanar', 'required');
         $this->form_validation->set_rules('naslov','Naslov', 'required|max_length[18]', 'Adresa nije validna');
@@ -439,13 +374,11 @@ class Stanodavac extends CI_Controller {
             
             $naslov = $this->input->post("naslov");
             $tekst = $this->input->post("tekst");
-
             $tip = $this->input->post("tip");
             $vlasnikId = $this->session->userdata("korisnik")->IDK;
             $stanarId = $this->input->post("podstanar");
             if ($stanarId != null){
                 $this->ModelObavestenje_Opomena->dodajObavestenjeOpomenu($vlasnikId, $stanarId, $naslov, $tekst, $tip);
-
                 $data['tipPoruke']= 'success';
                 $data['poruka']= 'Uspešno ste poslali '.$tip.' Vašem podstanaru.';
             }
@@ -455,14 +388,12 @@ class Stanodavac extends CI_Controller {
             }
             $this->posaljiteObavestenjePodstanaruPg($data);
         }
-
     }
     
     public function okaciteNaOglasnuTablu(){
         
         $this->form_validation->set_message('max_length', 'Polje {field} može imati najviše {param} karaktera.');
         $this->form_validation->set_message('required', 'Polje {field} je obavezno.');
-
         
         $this->form_validation->set_rules('naslov','Naslov', 'required|max_length[18]');
         $this->form_validation->set_rules('tekst','Tekst','required|max_length[108]');
