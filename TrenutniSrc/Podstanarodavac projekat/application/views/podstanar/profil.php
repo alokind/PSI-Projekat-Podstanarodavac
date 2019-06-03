@@ -144,11 +144,24 @@
                         <p align="center">
                         <form action="<?php echo site_url('Azurator/azuriraj') ?>" method="post">
 
-                             <input type="password" name="lozinka" class="form-control" placeholder="Nova lozinka"> <br>
+                             <input type="password" name="lozinka" class="form-control" placeholder="Nova lozinka" pattern=".{5,}" required title="Unesite najmanje 5 karaktera"> <br>
                              <input class="btn btn-md btn-success btn-block text-uppercase" type="submit"  name="azuriranje" value="AŽURIRAJ">
                         </form>
+                        <div>
+                            <?php
+                                $greska = $this->session->flashdata('succ_change');
+                                if (isset($greska)) {
+                                    echo '<div class="alert alert-warning" align="center">';
+                                    echo $greska;
+                                    echo '</div>';
+                                }
+                            ?>
+                        </div>
                     </div>
-                    <div class="col-3"></div>
+                    <div class="col-3">
+                        
+                        
+                    </div>
                 </div>
                 <br><br><br><br>
             </div>
