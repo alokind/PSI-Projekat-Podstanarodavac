@@ -48,13 +48,23 @@
                     <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
                           <div class="card card-signin my-5">
                             <div class="card-body" align="left">
-                                  <h5 class="card-title text-center">Unesite podatke za dobijanje nove lozinke: </h5><hr><br>
-                                  <form name="login_forma" method=post action="<?php echo site_url('Gost/proslediLozinku')?>" >
+                                    <h5 class="card-title text-center">Unesite podatke za dobijanje nove lozinke: </h5><hr><br>
+                                    <form name="login_forma" method=post action="<?php echo site_url('Gost/proslediLozinku')?>" >
                                                <table bgcolor="#ff944d" align="center">
                                                        <input type="text" name="email" class="form-control" placeholder="E mail" required> <br>
                                                        <input class="btn btn-lg btn-success btn-block text-uppercase"  type="submit" name="zahtevajLozinku" value="Potvrdi">
                                                </table>
-                                       </form>
+                                    </form>
+                                    <div>
+                                        <?php
+                                                $greska = $this->session->flashdata('error_no_email');
+                                                if (isset($greska)) {
+                                                    echo '<div class="alert alert-warning" align="center">';
+                                                    echo $greska;
+                                                    echo '</div>';
+                                                }
+                                        ?>
+                                    </div>
                             </div>
                           </div>
                     </div>
