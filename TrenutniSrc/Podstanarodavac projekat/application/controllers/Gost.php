@@ -10,7 +10,8 @@
  * 
  * Autor metoda:
  *      index, naPocetnu, naPrijavu, neuspesnaPrijava, ulogujSe, 
- *      naRegistraciju, registrujSe, neuspesnaRegistracija, uspesnaRegistracija
+ *      naRegistraciju, registrujSe, neuspesnaRegistracija, uspesnaRegistracija,
+ *      naZaboravljenuLozinku, proslediLozinku
  * Vasilije Becic
  */
 
@@ -191,7 +192,7 @@ class Gost extends CI_Controller{
     //--------------------------------------------------------------------------
     //--------------------------------------------------------------------------
     
-    //METODE ZA DOBIJANJE NOVE LOZINKE
+    //METODE ZA DOBIJANJE LOZINKE NA MAIL
     //--------------------------------------------------------------------------
     //Metoda za odlazak na stranicu za dobijanje lozinke putem maila
     public function naZaboravljenuLozinku() {
@@ -202,23 +203,29 @@ class Gost extends CI_Controller{
     public function proslediLozinku() {
         if ($this->input->post('zahtevajLozinku')) {
             $email = $this->input->post('email');
-            $this->ModelKorisnik->dohvatiKorisnika($email);
+            $postoji = $this->ModelKorisnik->dohvatiKorisnika($email);
         
-            $trenutni_korisnik = $this->ModelKorisnik->korisnik;
-            $lozinka = $trenutni_korisnik->Lozinka;
+            if ($postoji == TRUE) {
+                $trenutni_korisnik = $this->ModelKorisnik->korisnik;
+                $lozinka = $trenutni_korisnik->Lozinka;
             
-            $subject = 'Lozinka';
-            $poruka = 'Vasa lozinka je: ' . $lozinka;
-         
-            $this->email->from($this->admin_email, 'Podstanarodavac');
-            $this->email->to($email);
-            $this->email->subject($subject);
-            $this->email->message($poruka);
-            
-            $this->email->send();
-            echo $this->email->print_debugger();
-            
-            $this->naPocetnu();
+                $subject = 'Lozinka';
+                $poruka = 'Vasa lozinka je: ' . $lozinka;
+
+                $this->email->from($this->admin_email, 'Podstanarodavac');
+                $this->email->to($email);
+                $this->email->subject($subject);
+                $this->email->message($poruka);
+
+                $this->email->send();
+                echo $this->email->print_debugger();
+
+                $this->naPocetnu();  
+            } else {
+                $poruka = "Korisnik sa datim email-om nije registrovan.";
+                $this->session->set_flashdata('error_no_email', $poruka);
+                $this->naZaboravljenuLozinku();
+            }
         }
     }
     //--------------------------------------------------------------------------
