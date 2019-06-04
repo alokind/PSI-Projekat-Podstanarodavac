@@ -18,13 +18,17 @@ class Podstanar extends CI_Controller{
     public function __construct() { //Da li treba ucitavati sve modele?
         parent::__construct();
         
-        $this->load->model("ModelKorisnik");
-        $this->load->model("ModelKvar");
-        $this->load->model("ModelObavestenje_Opomena");
-        $this->load->model("ModelOglasnaTabla");
-        $this->load->model("ModelRacun");
-        $this->load->model("ModelZakup");
-        $this->load->library('form_validation');
+        if ($this->session->userdata('korisnik') != NULL) {
+            $this->load->model("ModelKorisnik");
+            $this->load->model("ModelKvar");
+            $this->load->model("ModelObavestenje_Opomena");
+            $this->load->model("ModelOglasnaTabla");
+            $this->load->model("ModelRacun");
+            $this->load->model("ModelZakup");
+            $this->load->library('form_validation');
+        } else {
+            redirect('Gost');
+        }
     }
     
     //Indeks metoda
