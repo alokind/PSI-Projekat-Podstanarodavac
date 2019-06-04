@@ -21,24 +21,32 @@ class Gost extends CI_Controller{
     //Konstruktor
     public function __construct() {
         parent::__construct();
-        $this->load->model("ModelKorisnik");
-        $this->load->library('form_validation');
-        $this->load->library('email');
-        
-       //SMTP & mail configuration
-        $config = array(
-            'protocol'  => 'smtp',
-            'smtp_host' => 'ssl://smtp.googlemail.com',
-            'smtp_port' => 465,
-            'smtp_user' => 'podstanarodavac@gmail.com',
-            'smtp_pass' => 'ata45ktu.1',
-            'mailtype'  => 'html',
-            'charset'   => 'utf-8'
-        );
-        $this->email->initialize($config);
-        //$this->email->set_mailtype("html");
-        $this->email->set_newline("\r\n");
+        if ($this->session->userdata('korisnik') != NULL) {
+            $trenutni_korisnik = $this->session->userdata('korisnik');
+            if ($trenutni_korisnik->Tip == 'P') {
+                redirect('Podstanar');
+            } else {
+                redirect('Stanodavac');
+            }
+        } else {
+            $this->load->model("ModelKorisnik");
+            $this->load->library('form_validation');
+            $this->load->library('email');
 
+           //SMTP & mail configuration
+            $config = array(
+                'protocol'  => 'smtp',
+                'smtp_host' => 'ssl://smtp.googlemail.com',
+                'smtp_port' => 465,
+                'smtp_user' => 'podstanarodavac@gmail.com',
+                'smtp_pass' => 'ata45ktu.1',
+                'mailtype'  => 'html',
+                'charset'   => 'utf-8'
+            );
+            $this->email->initialize($config);
+            //$this->email->set_mailtype("html");
+            $this->email->set_newline("\r\n");
+        }
     }
     
     //GLAVNE METODE
@@ -61,7 +69,7 @@ class Gost extends CI_Controller{
     //--------------------------------------------------------------------------
     //Metoda za odlazak na stranicu prijavu
     public function naPrijavu() {
-        $this->load->view('prijava.php');   
+        $this->load->view('prijava.php');
     }
 
     //Metoda za prikaz greske pri neuspesnoj prijavi
@@ -72,48 +80,36 @@ class Gost extends CI_Controller{
     
     //Metoda za prijavljivanje - radjena na nacin sa form_validation->run()
     public function ulogujse() {
-        if ($this->session->userdata('korisnik') == NULL) {
-            //Obavezni email i password
-            $this->form_validation->set_rules("email", "Email", "required");
-            $this->form_validation->set_rules("passwd", "Password", "required");
+        //Obavezni email i password
+        $this->form_validation->set_rules("email", "Email", "required");
+        $this->form_validation->set_rules("passwd", "Password", "required");
 
-            //Poruka ako je neko polje ostalo prazno
-            $this->form_validation->set_message("required", "Polje {field} je ostalo prazno.");
+        //Poruka ako je neko polje ostalo prazno
+        $this->form_validation->set_message("required", "Polje {field} je ostalo prazno.");
 
+        if ($this->form_validation->run()) {
+            $email = $this->input->post('email');
+            $lozinka = $this->input->post('passwd');
 
-            if ($this->form_validation->run()) {
-                $email = $this->input->post('email');
-                $lozinka = $this->input->post('passwd');
+            //Provera da li postoji korisnik sa datim emailom i odredjivanje eventualne greske
+            if (!$this->ModelKorisnik->dohvatiKorisnika($email)) {
+                $this->neuspesnaPrijava("Neispravan email");
+            } else if (!$this->ModelKorisnik->ispravnaLozinka($lozinka, $email)) {
+                $this->neuspesnaPrijava("Neispravna lozinka");
+            } else {
+                //Nakon uspesne prijave, pamti se koji je korisnik u sesiji
+                $korisnik = $this->ModelKorisnik->dohvacenKorisnik();
+                $this->session->set_userdata('korisnik', $korisnik);
 
-                //Provera da li postoji korisnik sa datim emailom i odredjivanje eventualne greske
-                if (!$this->ModelKorisnik->dohvatiKorisnika($email)) {
-                    $this->neuspesnaPrijava("Neispravan email");
-
-                } else if (!$this->ModelKorisnik->ispravnaLozinka($lozinka, $email)) {
-                    $this->neuspesnaPrijava("Neispravna lozinka");
-
+                //U zavisnosti od tipa korisnika, odlazi se na odgovarajuci kontroler
+                if ($korisnik->Tip == 'P') {
+                    redirect("Podstanar");
                 } else {
-                        //Nakon uspesne prijave, pamti se koji je korisnik u sesiji
-                    $korisnik = $this->ModelKorisnik->dohvacenKorisnik();
-                    $this->session->set_userdata('korisnik', $korisnik);
-
-                    //U zavisnosti od tipa korisnika, odlazi se na odgovarajuci kontroler
-                    if ($korisnik->Tip == 'P') {
-                        redirect("Podstanar");
-                    } else {
-                        redirect("Stanodavac");
-                    }
+                    redirect("Stanodavac");
                 }
-            } else {
-                $this->neuspesnaPrijava("Popunite prazna polja");
-            } 
-        } else {
-            $korisnik_ulogovan = $this->session->userdata('korisnik');
-            if ($korisnik_ulogovan->Tip == 'P') {
-                redirect("Podstanar");
-            } else {
-                redirect("Stanodavac");
             }
+        } else {
+            $this->neuspesnaPrijava("Popunite prazna polja");
         }
     }
     //--------------------------------------------------------------------------
