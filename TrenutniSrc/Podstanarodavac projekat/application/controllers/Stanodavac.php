@@ -14,14 +14,18 @@ class Stanodavac extends CI_Controller {
     //Konstruktor
     public function __construct() {
         parent::__construct();
-        $this->load->model("ModelKorisnik");
-        $this->load->library('form_validation');
-        $this->aktivanKorisnik = $this->session->userdata('korisnik');
+	if ($this->session->userdata('korisnik') != NULL) {
+		$this->load->model("ModelKorisnik");
+		$this->load->library('form_validation');
+		$this->aktivanKorisnik = $this->session->userdata('korisnik');
 		$this->load->model('ModelOglasnaTabla');
-        $this->load->model('ModelRacun');
-        $this->load->model('ModelZakup');
-        $this->load->model('ModelKvar');
-        $this->load->model('ModelObavestenje_Opomena');
+		$this->load->model('ModelRacun');
+		$this->load->model('ModelZakup');
+		$this->load->model('ModelKvar');
+		$this->load->model('ModelObavestenje_Opomena');
+	} else {
+	  	redirect('Gost');	
+	}
     }
     
     //GLAVNE METODE
