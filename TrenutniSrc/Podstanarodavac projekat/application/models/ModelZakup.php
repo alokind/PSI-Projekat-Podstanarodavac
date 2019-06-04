@@ -161,6 +161,9 @@ class ModelZakup extends CI_Model{
         $this->db->from("Zakup");
         $query = $this->db->get();
         $row = $query->row();
+        if ($row == null) {
+            return false;
+        }
         $prihvacen = $row->Prihvacen;
         if($prihvacen == 0){
             return false;
