@@ -16,9 +16,13 @@ class Azurator extends CI_Controller {
     //Konstruktor
     public function __construct() {
         parent::__construct();
-        $this->load->model("ModelKorisnik");
-        $this->load->library('form_validation');
-        $this->aktivanKorisnik = $this->session->userdata('korisnik');
+        if ($this->session->userdata('korisnik') != NULL) {
+            $this->load->model("ModelKorisnik");
+            $this->load->library('form_validation');
+            $this->aktivanKorisnik = $this->session->userdata('korisnik');
+        } else {
+            redirect('Gost');
+        }   
     }
     
     //GLAVNE METODE
