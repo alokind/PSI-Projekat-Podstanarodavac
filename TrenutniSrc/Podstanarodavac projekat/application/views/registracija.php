@@ -62,8 +62,8 @@
                                             Muški <input type="radio" name="pol" value="muski"required> <br><br>
                                             <strong>&nbsp;Uloga </strong>
                                             <select class="form-control" name="role" style="width: 70%" required>
-                                                    <option>Vlasnik</option>
-                                                    <option>Stanar</option>
+                                                    <option value='S'>Vlasnik</option>
+                                                    <option value='P'>Stanar</option>
                                             </select>
                                             <br>
                                         &nbsp;<input type="checkbox" name="terms" required>&nbsp;&nbsp;Slažem se sa uslovima korišćenja
