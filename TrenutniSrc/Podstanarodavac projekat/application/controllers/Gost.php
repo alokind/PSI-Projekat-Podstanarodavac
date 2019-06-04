@@ -72,39 +72,48 @@ class Gost extends CI_Controller{
     
     //Metoda za prijavljivanje - radjena na nacin sa form_validation->run()
     public function ulogujse() {
-        //Obavezni email i password
-        $this->form_validation->set_rules("email", "Email", "required");
-        $this->form_validation->set_rules("passwd", "Password", "required");
-        
-        //Poruka ako je neko polje ostalo prazno
-        $this->form_validation->set_message("required", "Polje {field} je ostalo prazno.");
-        
-        
-        if ($this->form_validation->run()) {
-            $email = $this->input->post('email');
-            $lozinka = $this->input->post('passwd');
-            
-            //Provera da li postoji korisnik sa datim emailom i odredjivanje eventualne greske
-            if (!$this->ModelKorisnik->dohvatiKorisnika($email)) {
-                $this->neuspesnaPrijava("Neispravan email");
-                
-            } else if (!$this->ModelKorisnik->ispravnaLozinka($lozinka, $email)) {
-                $this->neuspesnaPrijava("Neispravna lozinka");
-                
-            } else {
-                //Nakon uspesne prijave, pamti se koji je korisnik u sesiji
-                $korisnik = $this->ModelKorisnik->dohvacenKorisnik();
-                $this->session->set_userdata('korisnik', $korisnik);
-                
-                //U zavisnosti od tipa korisnika, odlazi se na odgovarajuci kontroler
-                if ($korisnik->Tip == 'P') {
-                    redirect("Podstanar");
+        if ($this->session->userdata('korisnik') == NULL) {
+            //Obavezni email i password
+            $this->form_validation->set_rules("email", "Email", "required");
+            $this->form_validation->set_rules("passwd", "Password", "required");
+
+            //Poruka ako je neko polje ostalo prazno
+            $this->form_validation->set_message("required", "Polje {field} je ostalo prazno.");
+
+
+            if ($this->form_validation->run()) {
+                $email = $this->input->post('email');
+                $lozinka = $this->input->post('passwd');
+
+                //Provera da li postoji korisnik sa datim emailom i odredjivanje eventualne greske
+                if (!$this->ModelKorisnik->dohvatiKorisnika($email)) {
+                    $this->neuspesnaPrijava("Neispravan email");
+
+                } else if (!$this->ModelKorisnik->ispravnaLozinka($lozinka, $email)) {
+                    $this->neuspesnaPrijava("Neispravna lozinka");
+
                 } else {
-                    redirect("Stanodavac");
+                        //Nakon uspesne prijave, pamti se koji je korisnik u sesiji
+                    $korisnik = $this->ModelKorisnik->dohvacenKorisnik();
+                    $this->session->set_userdata('korisnik', $korisnik);
+
+                    //U zavisnosti od tipa korisnika, odlazi se na odgovarajuci kontroler
+                    if ($korisnik->Tip == 'P') {
+                        redirect("Podstanar");
+                    } else {
+                        redirect("Stanodavac");
+                    }
                 }
-            }
+            } else {
+                $this->neuspesnaPrijava("Popunite prazna polja");
+            } 
         } else {
-            $this->neuspesnaPrijava("Popunite prazna polja");
+            $korisnik_ulogovan = $this->session->userdata('korisnik');
+            if ($korisnik_ulogovan->Tip == 'P') {
+                redirect("Podstanar");
+            } else {
+                redirect("Stanodavac");
+            }
         }
     }
     //--------------------------------------------------------------------------
