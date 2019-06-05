@@ -63,7 +63,7 @@
                  <div class="container">
                      <h2 class="font-weight-bold mb-5 mt-5" >Oglasna tabla</h2>
 
-                    <form action="<?php echo site_url('Podstanar/obrisiOglas') ?>" method="post">
+                    <form action="<?php echo site_url('Podstanar/oglasnaTabla') ?>" method="post">
                         <div class="row" id="mestoZaNarudzbine">
                             <?php
                             if (isset($stvariNaOglasnojTabli)) {
