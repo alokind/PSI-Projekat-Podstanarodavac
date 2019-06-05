@@ -102,11 +102,11 @@ class ModelOglasnaTabla extends CI_Model{
      * @param int $IDStanara IDStanara
      * 
      */
-         public function dohvatiObavestenjaIDStanara($IDStanara){
-        if ($IDStanara == NULL) {
+         public function dohvatiObavestenjaZaStanara($IDVlasnika){
+        if ($IDVlasnika == NULL) {
             return null;
         }
-        $this->db->where("IDStanara", $IDStanara);
+        $this->db->where("IDVlasnika", $IDVlasnika);
         $this->db->from("oglasna_tabla");
         $query = $this->db->get();
         $result = $query->result();

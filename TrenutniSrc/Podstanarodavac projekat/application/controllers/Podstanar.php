@@ -48,7 +48,7 @@ class Podstanar extends CI_Controller{
     
     public function naOglasnu($data=null){
         $vlasnikId = $this->ModelZakup->dohvatiIdVlasnika($this->session->userdata("korisnik")->IDK);
-        $data['stvariNaOglasnojTabli'] = $this->ModelOglasnaTabla->dohvatiObavestenjaIDVlasnika($vlasnikId);
+        $data['stvariNaOglasnojTabli'] = $this->ModelOglasnaTabla->dohvatiObavestenjaZaStanara($vlasnikId);
         $this->load->view('Podstanar/oglasnaTabla.php', $data);
     }
     
@@ -367,7 +367,7 @@ class Podstanar extends CI_Controller{
      */
     public function oglasnaTabla($data=NULL){
         $vlasnikId = $this->ModelZakup->dohvatiIdVlasnika($this->session->userdata("korisnik")->IDK);
-        $data['stvariNaOglasnojTabli'] = $this->ModelOglasnaTabla->dohvatiObavestenjaIDVlasnika($vlasnikId);
+        $data['stvariNaOglasnojTabli'] = $this->ModelOglasnaTabla->dohvatiObavestenjaZaStanara($vlasnikId);
         $this->load->view('Podstanar/oglasnaTabla.php', $data);
     }
     
