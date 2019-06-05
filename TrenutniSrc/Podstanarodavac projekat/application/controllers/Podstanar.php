@@ -1,20 +1,31 @@
 <?php
+
 /*
- * 
- * Opis:    - Klasa kontrolera za akcije podstanara
- *          - Obuhvata sledece akcije:
- *              o Zakup stana
- *              o Sklapanje ugovora
- *              o Placanje racuna
- *              o Prijava kvara
- *              o Kacenje obavestenja
+ * @author Boško Ćurčin 0549/2016
  * 
  */
+
+
+/*
+ * Podstanar - klasa kontrolera Podstanara odgovornog za aktivnosti prijavljenog podstanara
+ * 
+ * @version 2.0
+ */
+
 class Podstanar extends CI_Controller{
     
-    private $aktivanKorisnik=null;
+	/*
+    * @var object $aktivanKorisnik Korisnik
+    */
+    private $aktivanKorisnik = null;
     
-    //Konstruktor
+    /*
+     * Konstruktor nove instance klase Podstanara, uz proveru da li je trenutni korisnik ulogovan
+     * cime se izbegava da setanjem po pretrazivacu neko dodje na stranice koje su vidljive
+     * samo ulogovanim korisnicima
+     * 
+     * @return void
+     */
     public function __construct() { 
         parent::__construct();
         
@@ -31,21 +42,35 @@ class Podstanar extends CI_Controller{
         }
     }
     
-    //Indeks metoda
+    /*
+     * funkcija index Podstanara
+     */
     public function index(){
         $data['korisnik'] = $this->session->userdata('korisnik');
         redirect("Podstanar/naProfil");
     }
     
     //Redirekcije://----------------------------------------------------------------------------
+	
+	/*
+     * funkcija za odlazak na pocetnu stranicu
+     */
     public function naPocetnu(){
         $this->load->view("index.php");
     }
     
+	/*
+     * funkcija za odlazak na stranicu profila
+     */
     public function naUloge(){
         $this->naProfil();
     }
     
+	/*
+     * funkcija za odlazak na golasnu stranicu
+     *
+     *@param [] $data Data
+     */
     public function naOglasnu($data=null){
         $vlasnikId = $this->ModelZakup->dohvatiIdVlasnika($this->session->userdata("korisnik")->IDK);
         $data['stvariNaOglasnojTabli'] = $this->ModelOglasnaTabla->dohvatiObavestenjaZaStanara($vlasnikId);
