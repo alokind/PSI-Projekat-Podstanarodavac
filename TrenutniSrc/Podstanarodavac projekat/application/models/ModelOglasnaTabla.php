@@ -2,7 +2,7 @@
 
 /*
  * @author Nikola Dimitrijević 0597/2016
- * @author Bosko
+ * 
  * 
  */
 
