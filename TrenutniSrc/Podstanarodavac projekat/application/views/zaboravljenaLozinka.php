@@ -52,7 +52,7 @@
                                     <form name="login_forma" method=post action="<?php echo site_url('Gost/proslediLozinku')?>" >
                                                <table bgcolor="#ff944d" align="center">
                                                        <input type="text" name="email" class="form-control" placeholder="E mail" required> <br>
-                                                       <input class="btn btn-lg btn-success btn-block text-uppercase"  type="submit" name="zahtevajLozinku" value="Potvrdi">
+                                                       <input class="btn btn-lg btn-success btn-block text-uppercase"  type="submit" name="zahtevajLozinku" value="Pošalji lozinku na mail">
                                                </table>
                                     </form>
                                     <div>
