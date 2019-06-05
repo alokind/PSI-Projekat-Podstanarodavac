@@ -120,6 +120,7 @@ class ModelZakup extends CI_Model{
             return null;
         }
         $this->db->where("IDVlasnika", $idStanodavac);
+        $this->db->where("Prihvacen", true);
         $this->db->from("Zakup");
         $this->db->join('Korisnik', 'Korisnik.IDK = Zakup.IDStanara');
         $query = $this->db->get();
