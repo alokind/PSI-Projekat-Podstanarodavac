@@ -2,18 +2,29 @@
 
 /*
  * 
- * Opis:    - Pomocna klasa kontrolera za azuriranje
- *          - Akciju azuriranja dele i podstanar i stanodavac
- *          - Te ne zavisi direktno od njihovih kontrolera
- * Autor klase: Vasilije Becic
- * Bojana Krivokapic -> odjava
+ * @author Vasilije Becić 0069/2016
  * 
  */
 
+/*
+ * 
+ * Azurator - klasa kontrolera za azuriranje lozinke
+ * 
+ * @version 2.0
+ */
+
 class Azurator extends CI_Controller {
+    
+    /*
+     * @var object $aktivanKorisnik Korisnik
+     */
     private $aktivanKorisnik = null;
     
-    //Konstruktor
+    /*
+     * Konstruktor nove instance klase Azurator
+     * 
+     * @return void
+     */
     public function __construct() {
         parent::__construct();
         if ($this->session->userdata('korisnik') != NULL) {
@@ -25,24 +36,31 @@ class Azurator extends CI_Controller {
         }   
     }
     
-    //GLAVNE METODE
-    //--------------------------------------------------------------------------
-    //index metoda
+    /*
+     * funkcija index Azuratora
+     */
     public function index() {
         $this->load->view('azuriraj.php');
     }
     
-    //Metoda za odlazak na pocetnu
+    /*
+     * funkcija za odlazak na pocetnu stranicu
+     */
     public function naPocetnu() {
         $this->load->view('index.php');
     }
     
-    //Metoda za odlazak na stranicu za azuriranje loznike
+    /*
+     * funkcija za odlazak na stranicu za azuriranje
+     */
     public function naAzuriranje() {
         $this->load->view('azuriraj.php');
     }
     
-    //Metoda za azuriranje lozinke
+    /*
+     * funkcija koja sluzi da azurira lozinku trenutnog korisnika, na osnovu
+     * lozinke prosledjene u view
+     */
     public function azuriraj() {
         //Proverava se mail trenutno ulogovanog korisnika
         $trenutni_korisnik = $this->session->userdata('korisnik');
@@ -67,7 +85,5 @@ class Azurator extends CI_Controller {
             }
             
         }
-    }  
-    //--------------------------------------------------------------------------
-    //--------------------------------------------------------------------------
+    }
 }
