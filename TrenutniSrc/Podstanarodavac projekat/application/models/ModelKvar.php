@@ -2,7 +2,7 @@
 
 /*
  * @author Nikola Dimitrijević 0597/2016
- * @author Bosko
+ * @author Boško Ćurčin 0549/2016
  * 
  */
 
@@ -15,10 +15,19 @@
  */
 class ModelKvar extends CI_Model {
     
+	//Konstruktor
     public function __construct() {
         parent::__construct();
     }
     
+	/*
+		Funkcija koja vrši dodavanje kvara u tabelu Kvar.
+		Na početku dohvatam dohvatam idVlasnika na osnovu
+		prosleđenog idPodstanara, a zatim u tabelu Kvar
+		dodajem naslov i opis kvara.
+		
+		@param int $podstanarID, String $naslov, String $opis
+	*/
     public function dodajKvar($podstanarID,$naslov,$opis){
         $this->db->from('zakup');
         $this->db->where("IDStanara",$podstanarID);
