@@ -21,12 +21,28 @@ class ModelOglasnaTabla extends CI_Model{
     }
     
     //Bojanine metode://--------------------------------------------------------------------------
-    //sa sajta videla ovo
+      /*
+     * Funkcija koja unosi u bazu novu unete podatke iz oglasne table
+     * 
+     * @param int $IDVlasnika IDVlasnika
+     * @param string $naslov Naslov
+     * @param string $tekst Tekst
+     * kako ne bih cuvala u bazu polje po polje sacuvala sam u niz pa onda prosledila ceo niz sa podacima u bazu 
+     */
     public function cuvajObavestenje($naslov, $tekst, $IDVlasnika) {
         $data = array('Naslov'=>$naslov,'Tekst'=> $tekst, 'IDVlasnika'=> $IDVlasnika);
         $this->db->insert('oglasna_tabla',$data);
     }
-    
+     /*
+     * Funkcija koja cuva podatke koje je uneo stanar na adekvatnu oglasnu tablu
+     * @param int $VlasnikID IDVlasnika
+     * @param string $naslov Naslov
+     * @param string $tekst Tekst
+     * takodje ih cuva u niz data pa onda ceo niz insertuje. 
+     * Naravno, pre toga je potrebno da te podatke cuva na adekvatnoj oglasnoj tabli, 
+     * odnosno, na onoj gde je njegov vlasnik sa svojim podstanarima. Da bih utvrdila tu relaciju, da taj podstanar
+     * ogovara bas tom stanodavcu moram to da pokupim iz tabele zakup.
+     */
     public function cuvajObavestenjeStanar($naslov, $tekst, $IDStanara) {
         $this->db->where("IDStanara", $IDStanara);
         $this->db->from("zakup");
@@ -40,7 +56,7 @@ class ModelOglasnaTabla extends CI_Model{
     }
     
     /*
-     * Funkcija koja dohvata sve stvari sa OGlasne table koji su okačeni
+     * Funkcija koja dohvata sve stvari sa Oglasne table koji su okačeni
      * na oglasnu tablu vlasnika sa prosleđenim ID-jem
      * i parsira ih za adekvatno prikazivanje frontend-u
      * 
@@ -78,7 +94,14 @@ class ModelOglasnaTabla extends CI_Model{
         }
         return $stvariNaOglasnojTabli;
     }
-    
+     /*
+     * Funkcija koja dohvata sve stvari sa Oglasne table koji su okačeni
+     * na oglasnu tablu stanara sa prosleđenim ID-jem
+     * i parsira ih za adekvatno prikazivanje frontend-u
+     * 
+     * @param int $IDStanara IDStanara
+     * 
+     */
          public function dohvatiObavestenjaIDStanara($IDStanara){
         if ($IDStanara == NULL) {
             return null;
