@@ -101,7 +101,7 @@
                                                 <input class="btn btn-md btn-info btn-block text-uppercase" type="submit" name="tip" value="Obaveštenje">
                                             </div>
                                             <div class="col-sm-6">
-                                                <input class="btn btn-md btn-warning btn-block text-uppercase" type="submit"  name="tip" value="Opomena">
+                                                <input class="btn btn-md btn-danger btn-block text-uppercase" type="submit"  name="tip" value="Opomena">
                                             </div>
                                         </div>
                                     </form>
