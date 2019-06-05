@@ -1,12 +1,15 @@
 <?php
 /*
+ * @author Nikola Dimitrijević 0597/2016
+ * @author Bojana Krivokapić   0323/2016
  * 
- * Opis:    - Klasa kontrolera za akcije Stanodavac
- *          - Ovde samo u sluzbi azuriranja nove lozinke
- * Autor metoda:
- *      index, naPocetnu, naPrijavu, naProfil,
- *      naPrijavu, neuspesnaPrijava, ulogujSe, 
- * Vasilije Becic
+ */
+
+
+/*
+ * Stanodavac - klasa koja opslužuje zahteve korisnika registrovanog kao Stanodavac
+ * 
+ * @version 2.0
  */
 class Stanodavac extends CI_Controller {
     private $aktivanKorisnik = null;
@@ -131,12 +134,20 @@ class Stanodavac extends CI_Controller {
      * 
      */
     
+    /*
+     * Funkcija koja preusmerava ulogovanog Stanodavca na početnu stranu - profil
+     */
     public function index(){
         $data['korisnik'] = $this->session->userdata('korisnik');
         redirect("Stanodavac/naProfil");
         //$this->load->view('stanodavac/naProfil.php', $data);
     }
     
+    /*
+     * Funkcija koja obrađuje polja iz forme za unos zakupa stana
+     * proverava da li su validni u zavisnosti od čega ih upisuje u bazu
+     *  i šalje odgovarajuću povratnu poruku
+     */
     public function izdajteStan(){
         
         $this->form_validation->set_message('is_natural_no_zero', 'Polje {field} je obavezno.');
@@ -205,6 +216,10 @@ class Stanodavac extends CI_Controller {
         }
     }
     
+    /*
+     * Funkcija koja na osnovu odabranog Podstanara generiše pdf ugovora sa njim
+     * sa svim unetim informacijama
+     */
     public function generisiteUgovor(){
         $vlasnikId = $this->session->userdata("korisnik")->IDK;
         $stanarId = $this->input->post("podstanar");
@@ -298,6 +313,11 @@ class Stanodavac extends CI_Controller {
         $pdf->Output('Ugovor o zakupu stana.pdf', 'D');
     }
     
+    /*
+     * Funkcija koja obrađuje polja iz forme za unos računa za Podstanara
+     * proverava da li su validni u zavisnosti od čega ih upisuje u bazu
+     * i šalje odgovarajuću povratnu poruku
+     */
     public function unesiteRacun(){
         
         $this->form_validation->set_message('is_natural_no_zero', 'Polje {field} mora biti broj veći od nule.');
@@ -338,12 +358,10 @@ class Stanodavac extends CI_Controller {
         }
     }
     
-//    public function dohvatiRacune(){
-//        if($this->input->post('podstanar_id')){
-//            echo $this->ModelRacun->dohvatiRacune($this->input->post('podstanar_id'));
-//        }
-//    }
-    
+    /*
+     * Funkcija koja omogućava Stanodavcu da validira uplatu ispostavljenog
+     * računa i obriše taj račun iz baze
+     */
     public function potvrditeUplatu(){
         $racuni=$this->input->post('racuni');
         if ($racuni != null){
@@ -360,12 +378,17 @@ class Stanodavac extends CI_Controller {
         $this->potvrditeUplatuPg($data);
     }
     
+    
+    /*
+     * Funkcija koja odabranom Podstanaru šalje poruku u vidu Obaveštenja
+     * ili opomene. Takođe proverava da li su validni u zavisnosti od čega 
+     * ih upisuje u bazu i šalje odgovarajuću povratnu poruku
+     */
     public function posaljiteObavestenjePodstanaru(){
         $this->form_validation->set_message('is_natural_no_zero', 'Polje {field} je obavezno.');
         $this->form_validation->set_message('max_length', 'Polje {field} može imati najviše {param} karaktera.');
         $this->form_validation->set_message('required', 'Polje {field} je obavezno.');
         
-        //$this->form_validation->set_rules('podstnar','Podstanar', 'required');
         $this->form_validation->set_rules('naslov','Naslov', 'required|max_length[18]', 'Adresa nije validna');
         $this->form_validation->set_rules('tekst','Tekst','required|max_length[100]');
         
@@ -394,6 +417,11 @@ class Stanodavac extends CI_Controller {
         }
     }
     
+    /*
+     * Funkcija koja obrađuje polja iz forme za kačenje na Oglasnu tablu
+     * proverava da li su validni u zavisnosti od čega ih upisuje u bazu
+     * i šalje odgovarajuću povratnu poruku
+     */
     public function okaciteNaOglasnuTablu(){
         
         $this->form_validation->set_message('max_length', 'Polje {field} može imati najviše {param} karaktera.');
@@ -421,18 +449,29 @@ class Stanodavac extends CI_Controller {
         }
     }
     
+    /*
+     * Funkcija koja dohvata Stvari na oglasnoj tabli za ulogovanog Stanodavca
+     * i prosledjuje ih view-u
+     */
     public function oglasnaTabla($data=NULL){
         $vlasnikId = $this->session->userdata("korisnik")->IDK;
         $data['stvariNaOglasnojTabli'] = $this->ModelOglasnaTabla->dohvatiObavestenjaIDVlasnika($vlasnikId);
         $this->load->view('stanodavac/oglasnaTabla.php', $data);
     }
     
+    /*
+     * Funkcija koja dohvata prijavljene kvarove od strane Podstanara
+     * za ulogovanog Stanodavca i prosledjuje ih view-u
+     */
     public function prikaziKvarove(){
         $vlasnikId = $this->session->userdata("korisnik")->IDK;
         $data['kvarovi'] = $this->ModelKvar->dohvatiKvaroveIDVlasnika($vlasnikId);
         $this->load->view('stanodavac/kvarovi.php', $data);
     }
     
+    /*
+     * Funkcija koja obrađuje brisanje kvara iz baze i sa view-a
+     */
     public function obrisiteKvar(){
         $vlasnikId = $this->session->userdata("korisnik")->IDK;
         $IDKvar = $this->input->post('obrisi');
@@ -441,6 +480,9 @@ class Stanodavac extends CI_Controller {
         $this->load->view('stanodavac/kvarovi.php', $data);
     }
     
+    /*
+     * Funkcija koja obrađuje brisanje stvari na Oglasnoj tabli iz baze i sa view-a
+     */
     public function obrisiOglas(){
         $vlasnikId = $this->session->userdata("korisnik")->IDK;
         $IDO = $this->input->post('obrisi');
@@ -450,11 +492,18 @@ class Stanodavac extends CI_Controller {
     }
     
     
-    //Page redirects
+    /*
+     * Funkcija koja prosledjuje neophodne podatke za validno prikazivanje view-a
+     * izdajteStan
+     */
     public function izdajteStanPg($data=NULL){
         $this->load->view('stanodavac/izdajteStan.php', $data);
     }
     
+    /*
+     * Funkcija koja prosledjuje neophodne podatke za validno prikazivanje view-a
+     * generisiteUgovor
+     */
     public function generisiteUgovorPg($data=NULL){
         $podstanari = $this->ModelZakup->dohvatiPodstanare($this->session->userdata("korisnik")->IDK);
         $data['podstanariIme'] = $podstanari['ime'];
@@ -462,6 +511,10 @@ class Stanodavac extends CI_Controller {
         $this->load->view('stanodavac/generisiteUgovor.php', $data);
     }
     
+    /*
+     * Funkcija koja prosledjuje neophodne podatke za validno prikazivanje view-a
+     * unesiteRacun
+     */
     public function unesiteRacunPg($data=NULL){
         $podstanari = $this->ModelZakup->dohvatiPodstanare($this->session->userdata("korisnik")->IDK);
         $data['podstanariIme'] = $podstanari['ime'];
@@ -469,6 +522,10 @@ class Stanodavac extends CI_Controller {
         $this->load->view('stanodavac/unesiteRacun.php', $data);
     }
     
+    /*
+     * Funkcija koja prosledjuje neophodne podatke za validno prikazivanje view-a
+     * potvrditeUplatu
+     */
     public function potvrditeUplatuPg($data=NULL){
         $racuni = $this->ModelRacun->dohvatiPlaceneRacune($this->session->userdata("korisnik")->IDK);
         $neplaceniRacuni = $this->ModelRacun->dohvatiNeplaceneRacune($this->session->userdata("korisnik")->IDK);
@@ -477,6 +534,10 @@ class Stanodavac extends CI_Controller {
         $this->load->view('stanodavac/potvrditeUplatu.php', $data);
     }
     
+    /*
+     * Funkcija koja prosledjuje neophodne podatke za validno prikazivanje view-a
+     * posaljiteObavestenjePodstanaru
+     */
     public function posaljiteObavestenjePodstanaruPg($data=NULL){
         $podstanari = $this->ModelZakup->dohvatiPodstanare($this->session->userdata("korisnik")->IDK);
         $data['podstanariIme'] = $podstanari['ime'];
@@ -484,6 +545,10 @@ class Stanodavac extends CI_Controller {
         $this->load->view('stanodavac/posaljiteObavestenjePodstanaru.php', $data);
     }
     
+    /*
+     * Funkcija koja prosledjuje neophodne podatke za validno prikazivanje view-a
+     * okaciteNaOglasnuTablu
+     */
     public function okaciteNaOglasnuTabluPg($data=NULL){
         $this->load->view('stanodavac/okaciteNaOglasnuTablu.php', $data);
     }

@@ -1,18 +1,27 @@
 <?php
 
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * @author Nikola Dimitrijević 0597/2016
  */
 
-/**
- * Description of ModelObavestenje_Opomena
+/*
+ * ModelObavestenje_Opomena - klasa koja opslužuje zahteve za upis i čitanje iz baze,
+ * iz entiteta Obavestenje_Opomena
+ * 
+ * @version 2.0
  *
- * @author User
  */
 class ModelObavestenje_Opomena extends CI_Model {
     
+    /*
+     * Funkcija koja unosi u bazu novu instancu Obavestenje_Opomene
+     * 
+     * @param int $vlasnikId IDVlasnika
+     * @param int $stanarId IDStanara
+     * @param string $naslov Naslov
+     * @param string $tekst Tekst
+     * @param string $tip Tip
+     */
     public function dodajObavestenjeOpomenu($vlasnikId, $stanarId, $naslov, $tekst, $tip){
         $this->db->set("IDVlasnika", $vlasnikId);
         $this->db->set("IDStanara", $stanarId);
@@ -22,6 +31,14 @@ class ModelObavestenje_Opomena extends CI_Model {
         $this->db->insert("Obavestenje_opomena");
     }
     
+    
+    /*
+     * Funkcija koja dohvata sva obavestenja/opomene koji su poslati stanaru sa
+     * prosledjenim id-jem i parsira ih za adekvatno prikazivanje frontend-u
+     * 
+     * @param int $IDStanara IDStanara
+     * 
+     */
     public function dohvatiObavestenjaIDStanara($IDStanara){
         if ($IDStanara == NULL) {
             return null;
@@ -61,6 +78,10 @@ class ModelObavestenje_Opomena extends CI_Model {
         return $kvarovi;
     }
     
+    /* Funkcija koja briše Obavestenje sa prosleđenim id-jem iz baze
+     * 
+     * @param int $IDO IDO
+     */
     public function obrisiObavestenje($IDO){
         $this->db->where('IDO', $IDO);
         $this->db->delete('Obavestenje_opomena');

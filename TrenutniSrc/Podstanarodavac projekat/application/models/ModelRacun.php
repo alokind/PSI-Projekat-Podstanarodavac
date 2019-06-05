@@ -1,15 +1,17 @@
 <?php
 
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * @author Nikola Dimitrijević 0597/2016
+ * @author Bosko
+ * 
  */
 
-/**
- * Description of ModelRacun
- *
- * @author Bosko
+/*
+ * 
+ * ModelRacun - klasa koja opslužuje zahteve za upis i čitanje iz baze,
+ * iz entiteta Racun
+ * 
+ * @version 2.0
  */
 class ModelRacun extends CI_Model {
     
@@ -29,6 +31,15 @@ class ModelRacun extends CI_Model {
         $this->db->insert('racun',$data);
     }
     
+    /*
+     * Funkcija koja na osnovu prosleđenog ID-ja Vlasnika dohvata iz baze sve racune
+     * koje je taj Vlasnik napisao nekom Podstanaru, a koje je ovaj naznačio da je
+     * platio, i parsira ih za prikazivanje u frontendu
+     * 
+     * @param int $IDVlasnika IDVlasnika
+     * 
+     * @return string
+     */
     public function dohvatiPlaceneRacune($IDVlasnika){
         if ($IDVlasnika == NULL) {
             return null;
@@ -47,6 +58,15 @@ class ModelRacun extends CI_Model {
         return $racuniHtml;
    }
    
+    /*
+     * Funkcija koja na osnovu prosleđenog ID-ja Vlasnika dohvata iz baze sve racune
+     * koje je taj Vlasnik napisao nekom Podstanaru, a koje je ovaj naznačio da 
+     * NIJE platio, i parsira ih za prikazivanje u frontendu
+     * 
+     * @param int $IDVlasnika IDVlasnika
+     * 
+     * @return string
+     */
       public function dohvatiNeplaceneRacune($IDVlasnika){
         if ($IDVlasnika == NULL) {
             return null;
@@ -65,6 +85,11 @@ class ModelRacun extends CI_Model {
         return $racuniHtml;
    }
    
+    /*
+     * Funkcija koja briše racun sa prosleđenim id-jem iz baze
+     * 
+     * @param int $IDRacun IDRacun
+     */
    public function obrisiRacun($IDRacuna){
         if ($IDRacuna == NULL) {
             return null;

@@ -1,12 +1,17 @@
 <?php
 
-
-
-/**
- * Description of ModelZakup
- *
+/*
+ * @author Nikola Dimitrijević 0597/2016
  * @author Bosko
  */
+
+/*
+ * ModelZakup - klasa koja opslužuje zahteve za upis i čitanje iz baze,
+ * iz entiteta Zakup
+ * 
+ * @version 2.0
+ */
+
 class ModelZakup extends CI_Model{
     
     public function __construct() {
@@ -26,7 +31,6 @@ class ModelZakup extends CI_Model{
             return FALSE;
         }
     }
-    
     
     public function zakupiStan($podstanarID,$prihvacen){
         $this->db->from('zakup');
@@ -89,6 +93,17 @@ class ModelZakup extends CI_Model{
          $this->load->view('pdfreport',$data);
     }
     
+    /*
+     * Funkcija koja unosi u bazu novu instancu zakupa
+     * 
+     * @param int $vlasnikId IDVlasnika
+     * @param int $stanarId IDStanara
+     * @param string $adresaStana AdresaStana
+     * @param int $kirija Kirija
+     * @param int $duzinaZakupa TrajanjeZakupa
+     * @param Date $datumPocetkaZakupa DatumPocetkaZakupa
+     * @param int $kvadratura Kvadratura
+     */
     public function dodaj($vlasnikId, $stanarId, $adresaStana, $kirija, $duzinaZakupa, $datumPocetkaZakupa, $kvadratura){
         $false = false;
         $this->db->set("IDVlasnika", $vlasnikId);
@@ -102,6 +117,14 @@ class ModelZakup extends CI_Model{
         $this->db->insert("Zakup");
    }
    
+   /*
+    * Funkcija koja proverava da li je dati Vlasnik vec izdao stan datom Stanaru
+    * 
+    * @param int $vlasnikId IDVlasnika
+    * @param int $stanarId IDStanara
+    * 
+    * @return bool
+    */
    public function vecIzdatTomPodstanaru($vlasnikId, $stanarId){
         $this->db->where('IDVlasnika',$vlasnikId);
         $this->db->where("IDStanara", $stanarId);
@@ -115,6 +138,14 @@ class ModelZakup extends CI_Model{
         }
    }
    
+   /*
+    * Funkcija koja dohvata sve podstanare koji su prihvatili zakup stana sa Vlasnikom
+    * i parsira ih za prikazvanje u slect-u u html-u
+    * 
+    * @param int $idStanodavac IDVlasnika
+    * 
+    * @return String
+    */
     public function dohvatiPodstanare($idStanodavac=NULL){
         if ($idStanodavac == NULL) {
             return null;
@@ -135,6 +166,13 @@ class ModelZakup extends CI_Model{
         return $podstanari;
     }
     
+    /*
+     * Funkcija koja dohvata idVlasnika za dati idStanra
+     * 
+     * @param int $stanarId IDStanara
+     * 
+     * @return int
+     */
     public function dohvatiIdVlasnika($idStanar=NULL){
         if ($idStanar == NULL) {
             return null;
@@ -147,6 +185,15 @@ class ModelZakup extends CI_Model{
         return $row->IDVlasnika;
     }
     
+    /*
+     * Funkcija koja dohvata instancu zakupa na osnovu prosledjenih idVlasnika i
+     * idStanara
+     * 
+     * @param int $vlasnikId IDVlasnika
+     * @param int $stanarId IDStanara
+     * 
+     * @return string[]
+     */
     public function dohvatiZakupById($vlasnikId, $stanarId){
         $this->db->where('IDVlasnika',$vlasnikId);
         $this->db->where("IDStanara", $stanarId);

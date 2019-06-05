@@ -1,15 +1,17 @@
 <?php
 
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * @author Nikola Dimitrijević 0597/2016
+ * @author Bosko
+ * 
  */
 
-/**
- * Description of ModelKvar
- *
- * @author Bosko
+/*
+ * 
+ * ModelKvar - klasa koja opslužuje zahteve za upis i čitanje iz baze,
+ * iz entiteta Kvar
+ * 
+ * @version 2.0
  */
 class ModelKvar extends CI_Model {
     
@@ -34,6 +36,13 @@ class ModelKvar extends CI_Model {
         $this->db->insert('kvar', $data);
     }
     
+    /*
+     * Funkcija koja dohvata sve kvarove koji su prijavljeni vlasniku sa
+     * prosledjenim id-jem i parsira ih za adekvatno prikazivanje frontend-u
+     * 
+     * @param int $IDVlasnika IDVlasnika
+     * 
+     */
         public function dohvatiKvaroveIDVlasnika($IDVlasnika){
         if ($IDVlasnika == NULL) {
             return null;
@@ -69,6 +78,11 @@ class ModelKvar extends CI_Model {
         return $kvarovi;
     }
     
+    /*
+     * Funkcija koja briše kvar sa prosleđenim id-jem iz baze
+     * 
+     * @param int $IDKvar IDKvar
+     */
     public function obrisiKvar($IDKvar){
         $this->db->where('IDKvar', $IDKvar);
         $this->db->delete('kvar');

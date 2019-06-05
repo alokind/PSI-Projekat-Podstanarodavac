@@ -26,6 +26,13 @@ class ModelKorisnik extends CI_Model {
         $this->korisnik = NULL;
     }
     
+    /*
+     * Funkcija koja dohvata korisnika na osnovu prosleđenog email-a
+     * 
+     * @param string $kor_email Mail
+     * 
+     * @return []
+     */
     public function dohvatiKorisnika($kor_email){
         $this->korisnik = NULL;
         $result = $this->db->where('Mail', $kor_email)->get('korisnik');

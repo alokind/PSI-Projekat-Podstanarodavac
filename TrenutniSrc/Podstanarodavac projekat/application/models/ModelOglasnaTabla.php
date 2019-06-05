@@ -1,15 +1,18 @@
 <?php
 
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * @author Nikola Dimitrijević 0597/2016
+ * @author Bosko
+ * 
  */
 
-/**
- * Description of ModelOglasnaTabla
- *
- * @author Bosko
+/*
+ * 
+ * ModelOglasnaTabla - klasa koja opslužuje zahteve za upis i čitanje iz baze,
+ * iz entiteta OglasnaTabla
+ * 
+ * @version 2.0
+ * 
  */
 class ModelOglasnaTabla extends CI_Model{
     
@@ -36,6 +39,14 @@ class ModelOglasnaTabla extends CI_Model{
         $this->db->insert('oglasna_tabla',$data);
     }
     
+    /*
+     * Funkcija koja dohvata sve stvari sa OGlasne table koji su okačeni
+     * na oglasnu tablu vlasnika sa prosleđenim ID-jem
+     * i parsira ih za adekvatno prikazivanje frontend-u
+     * 
+     * @param int $IDVlasnika IDVlasnika
+     * 
+     */
     public function dohvatiObavestenjaIDVlasnika($IDVlasnika){
         if ($IDVlasnika == NULL) {
             return null;
@@ -97,6 +108,11 @@ class ModelOglasnaTabla extends CI_Model{
         return $stvariNaOglasnojTabli;
     }
     
+    /*
+     * Funkcija koja briše Oglas sa prosleđenim id-jem iz baze
+     * 
+     * @param int $IDO IDO
+     */
     public function obrisiOglas($IDO){
         $this->db->where('IDO', $IDO);
         $this->db->delete('oglasna_tabla');
