@@ -327,7 +327,10 @@ class Podstanar extends CI_Controller{
         $this->load->view('podstanar/obavestenja_opomene.php', $data);
     }
     
-    
+    /*Sadrzaj koji kacimo na oglasnu tablu treba da bude ispravan (zato je na pocetku izvrsena provera) u slucaju neke 
+     * neregularnosti ispisuje se adekvatna greska. Ukoliko je sve u redu prosledjuju se uneti podaci naslov i tekst u metodu
+     * iz odgovarajuceg modela (ModelOglasnaTabla->cuvajObavestenjeStanar) gde se zapravo sacuvaju uneti podaci.
+    */
      public function okaciteNaOglasnuTablu(){
         
         $this->form_validation->set_message('max_length', 'Polje {field} može imati najviše {param} karaktera.');
@@ -354,7 +357,7 @@ class Podstanar extends CI_Controller{
             $this->okaciObavestenjeRedirect($data);
         }
     }
-    
+    /*Funkcija koja ja zasluzna za prikaz oglasne table, da bi je nasli moram da nadjem koji je vlasnik mog stanara*/
     public function oglasnaTabla($data=NULL){
         $vlasnikId = $this->ModelZakup->dohvatiIdVlasnika($this->session->userdata("korisnik")->IDK);
         $data['stvariNaOglasnojTabli'] = $this->ModelOglasnaTabla->dohvatiObavestenjaIDVlasnika($vlasnikId);
