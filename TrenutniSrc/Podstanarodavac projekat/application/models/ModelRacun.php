@@ -2,7 +2,7 @@
 
 /*
  * @author Nikola Dimitrijević 0597/2016
- * @author Bosko
+ * @author Boško Ćurčin 0549/2016
  * 
  */
 
@@ -15,10 +15,17 @@
  */
 class ModelRacun extends CI_Model {
     
+	//Konstruktor
     public function __construct() {
         parent::__construct();
     }
     
+	/*
+		Funkcija koja radi izlistavanje svih racuna za
+		idPodstanara koji joj je prosledjen
+		
+		@param int $podstanarID IDStanara
+	*/
     public function izlistajRacune($podstanarID){
         $this->db->where("IDStanara", $podstanarID);
         $query=$this->db->get('Racun');
@@ -98,9 +105,15 @@ class ModelRacun extends CI_Model {
         $this->db->delete('Racun');
    }
    
+   /*
+		Funkcija kojom za Podstanara dohvatam sve
+		račune koje on treba da plati. Slična Vlasnikovim funckijama
+		uz jedinu razliku u SQL upitu. Isto se radi parsiranje
+		zbog lepseg prikaza u frontendu
+		
+		@param int $IDstanara IDStanara
+   */
     public function dohvatiRacune($IDstanara){
-        
-        
         $this->db->where("Placen", 0);
         $this->db->where("IDStanara", $IDstanara);
         $this->db->from("Racun");
@@ -123,6 +136,12 @@ class ModelRacun extends CI_Model {
         return $racuniHtml;
    }
    
+   /*
+		Funkcija kojom Podstanar označava jedan račun plaćenim 
+		na osnovu prosledjenog idja tog racuna
+		
+		@param int $IDRacuna IDR
+   */
     public function oznaciRacun($IDRacuna){
         if ($IDRacuna == NULL) {
             return null;
