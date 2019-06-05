@@ -357,7 +357,10 @@ class Podstanar extends CI_Controller{
             $this->okaciObavestenjeRedirect($data);
         }
     }
-    /*Funkcija koja ja zasluzna za prikaz oglasne table, da bi je nasli moram da nadjem koji je vlasnik mog stanara*/
+    /*Funkcija koja ja zasluzna za prikaz oglasne table, da bi je nasli moram da nadjem koji je vlasnik mog stanara
+       * Funkcija koja dohvata Stvari na oglasnoj tabli za ulogovanog Stanodavca
+     * i prosledjuje ih view-u
+     */
     public function oglasnaTabla($data=NULL){
         $vlasnikId = $this->ModelZakup->dohvatiIdVlasnika($this->session->userdata("korisnik")->IDK);
         $data['stvariNaOglasnojTabli'] = $this->ModelOglasnaTabla->dohvatiObavestenjaIDVlasnika($vlasnikId);
