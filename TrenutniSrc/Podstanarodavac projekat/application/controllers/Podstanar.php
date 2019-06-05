@@ -15,7 +15,7 @@ class Podstanar extends CI_Controller{
     private $aktivanKorisnik=null;
     
     //Konstruktor
-    public function __construct() { //Da li treba ucitavati sve modele?
+    public function __construct() { 
         parent::__construct();
         
         if ($this->session->userdata('korisnik') != NULL) {
@@ -52,6 +52,11 @@ class Podstanar extends CI_Controller{
         $this->load->view('Podstanar/oglasnaTabla.php', $data);
     }
     
+	/*
+		Proveravam da li je ugovor prihvacen:
+			-Ako jeste, vracam TRUE
+			-Ako nije, vracam FALSE i ne mogu da vidim ostale funkcionalnosti
+	*/
     public function naProfil() {
         $korisnik = $this->session->userdata('korisnik');
         $data['korisnik'] = $korisnik;
@@ -64,7 +69,18 @@ class Podstanar extends CI_Controller{
         $this->load->view('Podstanar/profil.php', $data);
     }
     
-    //Redirekcije na uloge podstanara://---------------------------------------------------------
+    //Redirekcije na uloge podstanara://-----------------------------------------------------------
+	/*
+		Zakup stana:
+		Proveravam da li je ugovor prihvacen:
+			-Ako jeste, vracam TRUE
+			-Ako nije, vracam false i ne mogu da vidim ostale funkcionalnosti
+		Nakon te provere, proveravam da li je Vlasnik kreirao ugovor za mene:
+			-Ako ne postoji, dobijam poruku o tome
+			-Ako postoji, dobijam 2 dugmeta kako bih mogao da ga prihvatim ili ne.
+		Nakon te provere, klikom na neko od 2 dugmeta ce mi se u bazi izmeniti polje PRIHVACEN.
+		Svakim sledecim klikom na zakup stana ja cu dobiti poruku da sam vec prihvatio ugovor.
+	*/
     public function zakupiStanRedirect($data=null){
         $korisnik = $this->session->userdata('korisnik');
         $data['korisnik'] = $korisnik;
@@ -95,7 +111,9 @@ class Podstanar extends CI_Controller{
             
         }
     }
-    
+    /*
+		Za sklapanje ugovora 
+	*/
     public function sklopiUgovorRedirect(){
         $korisnik = $this->session->userdata('korisnik');
         $data['korisnik'] = $korisnik;
@@ -146,26 +164,11 @@ class Podstanar extends CI_Controller{
         redirect("Podstanar/naUloge");
     }
     
- 
-    
-    
-    
-    
-    
-    
-    
-    
     /* 
        Klikom na dugme meni se iz baze dovlace svi podaci
-       potrebni za ugovor. I otvara mi se pdf sa mogucnoscu
-       da isti i odstampam.
+       potrebni za ugovor.To sve dohvatam na osnovu svog IDja.
+	   Nakon toga dobijam mogucnost da preuzmem ugovor.
     */
-   /* public function generisiUgovor(){
-         $podstanarID = $this->session->userdata("korisnik")->IDK;
-         $this->ModelZakup->izgenerisiUgovor($podstanarID);
-         //redirect("Podstanar/naUloge");
-    }*/
-    
      public function generisiUgovor(){
         $stanarId = $this->session->userdata("korisnik")->IDK;
         $vlasnikId = $this->ModelKorisnik->dohvatiVlasnika($stanarId);
@@ -282,11 +285,6 @@ class Podstanar extends CI_Controller{
     }
     
     
-    
-    
-    
-    
-    
     /*  
      * Iz forme dohvatam naslov i opis. Iz sesije idPodstanara.
      * Iz Ugovora idVlasnika.
@@ -313,12 +311,17 @@ class Podstanar extends CI_Controller{
         redirect("Podstanar/naUloge");
     }
     
+	/*
+		Metoda kojom ispisujem obavestenja
+	*/
     public function prikaziObavestenja(){
         $stanarId = $this->session->userdata("korisnik")->IDK;
         $data['obavestenja'] = $this->ModelObavestenje_Opomena->dohvatiObavestenjaIDStanara($stanarId);
         $this->load->view('podstanar/obavestenja_opomene.php', $data);
     }
-    
+    /*
+		Klikom na dugme, brise mi se obavestenje iz baze
+	*/
     public function obrisiteObavestenje(){
         $stanarId = $this->session->userdata("korisnik")->IDK;
         $IDO = $this->input->post('obrisi');
@@ -357,6 +360,7 @@ class Podstanar extends CI_Controller{
             $this->okaciObavestenjeRedirect($data);
         }
     }
+	
     /*Funkcija koja ja zasluzna za prikaz oglasne table, da bi je nasli moram da nadjem koji je vlasnik mog stanara
        * Funkcija koja dohvata Stvari na oglasnoj tabli za ulogovanog Stanodavca
      * i prosledjuje ih view-u
@@ -367,7 +371,7 @@ class Podstanar extends CI_Controller{
         $this->load->view('Podstanar/oglasnaTabla.php', $data);
     }
     
-    //logout
+    //Logout
     public function logout(){
         $this->session->unset_userdata('korisnik');
         $this->session->sess_destroy();
