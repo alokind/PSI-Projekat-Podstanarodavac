@@ -2,7 +2,7 @@
 
 /*
  * @author Nikola Dimitrijević 0597/2016
- * @author Bosko
+ * @author Boško Ćurčin 0549/2016
  */
 
 /*
@@ -14,13 +14,18 @@
 
 class ModelZakup extends CI_Model{
     
+	//Konstruktor
     public function __construct() {
         parent::__construct();
     }
     
     /*
-     *  Pomocna funkcija koja mi sluzi da proverim da li je vlasnik 
-     *  kreirao ugovor koji podstanar moze da prihvati ili odbije.
+        Funkcija koja mi sluzi da proverim da li je vlasnik 
+        kreirao ugovor koji podstanar moze da prihvati ili odbije.
+		
+		@param int $podstanarID IDPodstanara
+		
+		@return boolean
      */
     public function kreiranZahtev($podstanarID){
        $result=$this->db->where('IDStanara',$podstanarID)->get('Zakup'); //Pretpostavka da imam samo 1 red u zakupu
@@ -32,6 +37,13 @@ class ModelZakup extends CI_Model{
         }
     }
     
+	/*
+		Funkcija kojom za ulogu Podstanara, u bazi
+		označavam da li sam prihvatio ili odbio stan
+		
+		@param int $podstanarID IDStanara
+		@param int $prihvacen Prihvacen
+	*/
     public function zakupiStan($podstanarID,$prihvacen){
         $this->db->from('zakup');
         $this->db->where("IDStanara",$podstanarID);
@@ -41,7 +53,12 @@ class ModelZakup extends CI_Model{
         $this->db->query("UPDATE zakup SET Prihvacen='$prihvacen' WHERE IDVlasnika='$vlasnikID' AND IDStanara='$podstanarID'");
     }
         
-    
+    /*
+		Fukcija kojom na osnovu idja stanara , generisem ugovor o zakupu
+		tako što na osnovu tog idja dohvatam sve ostale potrebne podatke
+		
+		@param int $podstanarID IDStanara
+	*/
     public function izgenerisiUgovor($podstanarID){
         $data=[];
         //Dohvatanje ugovora iz baze:
@@ -61,8 +78,6 @@ class ModelZakup extends CI_Model{
         $kirija = $result->Kirija;
         $data['kirija']=$kirija;
         $trajanje = $result->TrajanjeZakupa; 
-        ////FIX THIS!
-        //$trajanje = 1;
         $data['trajanje']=$trajanje;
         $datum = $result->DatumPocetkaZakupa;
         $data['datum']=$datum;
@@ -203,7 +218,14 @@ class ModelZakup extends CI_Model{
         return $row;
     }
     
-    //Proveravam da li mi je vlasnik poslao novi ugovor koji mogu da prihvatim ili odbijem
+    /*
+		Funckija kojom za Stanara proveravam da li mi je Vlasnik 
+		poslao novi ugovor koji mogu da prihvatim ili odbijem,
+		
+		@param int $podstanarID IDStanara
+		
+		@return boolean
+	*/
     public function ugovorPrihvacen($podstanarID){
         $this->db->where("IDStanara", $podstanarID);
         $this->db->from("Zakup");
@@ -221,7 +243,14 @@ class ModelZakup extends CI_Model{
         }
     }
     
-    //Proveravam da li mi je vlasnik poslao novi ugovor koji mogu da prihvatim ili odbijem
+    /*
+		Funkcija kojom za Stanara proveravam da li mi je Vlasnik 
+		poslao novi ugovor koji mogu da prihvatim ili odbijem
+	
+		@param int $podstanarID IDStanara
+		
+		@return boolean
+	*/
     public function postojiUgovorZaStanara($podstanarID){
         $this->db->where("IDStanara", $podstanarID);
         $this->db->from("Zakup");
