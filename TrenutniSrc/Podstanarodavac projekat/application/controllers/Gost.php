@@ -2,23 +2,31 @@
 
 /*
  * 
- * Opis:    - Klasa kontrolera za akcije gosta
- *          - Obuhvata sledece akcije:
- *              o Posecivanje pocetne
- *              o Prijava gosta na sajt
- *              o Registracija gosta za aplikaciju
+ * @author Vasilije Becić 0069/2016
  * 
- * Autor metoda:
- *      index, naPocetnu, naPrijavu, neuspesnaPrijava, ulogujSe, 
- *      naRegistraciju, registrujSe, neuspesnaRegistracija, uspesnaRegistracija,
- *      naZaboravljenuLozinku, proslediLozinku
- * Vasilije Becic
  */
 
-class Gost extends CI_Controller{
+/*
+ * 
+ * Azurator - klasa kontrolera za Gosta
+ * 
+ * @version 2.0
+ */
+
+class Gost extends CI_Controller {
+    
+    /*
+     * @var string $admin_email Mail
+     */
     private $admin_email = 'podstanarodavac@gmail.com';
     
-    //Konstruktor
+    /*
+     * Konstruktor nove instance klase Gosta, uz vodjenje racuna da li je
+     * neko vec trenutno ulogovan u momentu rada gosta, cime bi se izbegla
+     * dupla prijava i problemi koji dolaze vracanjem unazad preko pretrazivaca
+     * 
+     * @return void
+     */
     public function __construct() {
         parent::__construct();
         if ($this->session->userdata('korisnik') != NULL) {
@@ -49,36 +57,46 @@ class Gost extends CI_Controller{
         }
     }
     
-    //GLAVNE METODE
-    //--------------------------------------------------------------------------
-    //index metoda
+    /*
+     * funkcija index Gosta
+     */
     public function index() {
         $this->load->view('index.php');
         //$this->naPocetnu();
     }
     
-    //Metoda za odlazak na pocetnu
+    /*
+     * funkcija za odlazak na pocetnu stranicu
+     */
     public function naPocetnu() {
         $this->load->view('index.php');
     }
-    //--------------------------------------------------------------------------
-    //--------------------------------------------------------------------------
     
     
-    //METODE ZA PRIJAVU
-    //--------------------------------------------------------------------------
-    //Metoda za odlazak na stranicu prijavu
+    /*
+     * funkcija za odlazak na stranicu za prijavu
+     */
     public function naPrijavu() {
         $this->load->view('prijava.php');
     }
 
-    //Metoda za prikaz greske pri neuspesnoj prijavi
+    /*
+     * funkcija za ispis greske pri neuspesnoj prijavi
+     * 
+     * @param string $poruka Poruka
+     */
     public function neuspesnaPrijava($poruka = NULL) {
         $this->session->set_flashdata('error_login_msg', $poruka);
         $this->naPrijavu();
     }
     
-    //Metoda za prijavljivanje - radjena na nacin sa form_validation->run()
+    /*
+     * funkcija za prijavljivanje neprijavljenog korisnika uz provere ispravnosti
+     * unetog emaila i sifre, kao i ispisa poruke rezultata neuspesne, odnosno
+     * uspesne prijave
+     * 
+     * @return void
+     */
     public function ulogujse() {
         //Obavezni email i password
         $this->form_validation->set_rules("email", "Email", "required");
@@ -112,18 +130,25 @@ class Gost extends CI_Controller{
             $this->neuspesnaPrijava("Popunite prazna polja");
         }
     }
-    //--------------------------------------------------------------------------
-    //--------------------------------------------------------------------------
     
     
-    //METODE ZA REGISTRACIJU
-    //--------------------------------------------------------------------------
-    //Metoda za odlazak na stranicu za registraciju
+    /*
+     * funkcija za odlazak na stranicu za registraciju
+     * 
+     * @return void 
+     */
     public function naRegistraciju() {
         $this->load->view('registracija.php');
     }
     
-    //Metoda za registrovanje - radjena na nacin sa input nad dugmetom za submit
+    /*
+     * funkcija zaduzena za registrovanje korisnika, uz kupljenje podataka iz
+     * odgovarajucih formi, provere ispravnosti i upisa novog korisniak u sistem,
+     * kao i slanje email-a dobrodosilce, alternativno ispisa
+     * poruka gresaka pri neuspesnoj registraciji
+     * 
+     * @return void
+     */
     public function registrujSe() {
         if ($this->input->post('registruj')) {
             //Kupljenje podataka iz forme
@@ -163,7 +188,14 @@ class Gost extends CI_Controller{
         }
     }
     
-    //Poruka dobrodoslice i njeno slanje na mail
+    /*
+     * funkcija zaduzena za slanje maila na email odgovarajuceg korisnika, u ovom
+     * slucaju, poruke dobrodoslice nakon uspesne registracije, uz osiguranje
+     * da ako je doslo do greske pri slanju maila, da se dobija poruka preko
+     * print_debugger() standardnog email Codeigniter
+     * 
+     * @return void
+     */
     public function posaljiEmail($korisnik) {
                 $ime = $korisnik['Ime'];
                 $prezime = $korisnik['Prezime'];
@@ -183,28 +215,45 @@ class Gost extends CI_Controller{
                 echo $this->email->print_debugger();
     }
     
-    //Metoda za prikaz greske pri neuspesnoj registraciji
+    /*
+     * funkcija za prikaz poruke pri neuspesnoj registraciji, sa ostajanjem
+     * na stranici za registraciju, gde ce se te poruke i videti
+     *
+     * @param string $poruka Poruka
+     * 
+     * @return void 
+     */
     public function neuspesnaRegistracija($poruka = NULL) {
         $this->session->set_flashdata('error_reg_msg', $poruka);
         $this->naRegistraciju();
     }
     
-    //Metoda za prikaz poruke o uspesnoj registraciji i prelazak na pocetnu
+    /*
+     * funkcija za prikaz poruke pri uspesnog registraciji i redirekciji
+     * ka pocetnoj stranici, gde ce ta poruka biti i ispisana
+     * 
+     * @param string $poruka Poruka
+     * 
+     * @return void
+     */
     public function uspesnaRegistracija($poruka) {
         $this->session->set_flashdata('succ_reg', $poruka);
         $this->naPocetnu();
     }
-    //--------------------------------------------------------------------------
-    //--------------------------------------------------------------------------
     
-    //METODE ZA DOBIJANJE LOZINKE NA MAIL
-    //--------------------------------------------------------------------------
-    //Metoda za odlazak na stranicu za dobijanje lozinke putem maila
+    
+    /*
+     * funkcija za odlazak nastranicu za zaboravljenu lozinku
+     */
     public function naZaboravljenuLozinku() {
         $this->load->view("zaboravljenaLozinka.php");
     }
     
-    //Metoda za dobijanje lozinke putem maila
+    /*
+     * funkcija za prosledjivanje zaboravljene lozinke putem maila
+     * 
+     * @return void
+     */
     public function proslediLozinku() {
         if ($this->input->post('zahtevajLozinku')) {
             $email = $this->input->post('email');
@@ -233,6 +282,4 @@ class Gost extends CI_Controller{
             }
         }
     }
-    //--------------------------------------------------------------------------
-    //--------------------------------------------------------------------------
 }
