@@ -2,25 +2,31 @@
 
 /*
  * 
- * Opis:    - Klasa Modela za tabelu Korisnika
- *          - Obuhvata sledece akcije:
- *              o Dohvatanje korisnika
- *              o Provera da li lozinka postoji
- *              o Provera da li korisnik sa datim JMBG postoji
- *              o Dodavanje novog korisnika
+ * @author Vasilije Becić 0069/2016
+ * @author Bosko Curcin 0549/2016
  * 
- * Autor metoda:
- *      prostojeciJMBG, dodajKorisnika, dohvacenKorisnik, izmeniLozinku, ispravnaLozinka
- * Vasilije Becic
+ */
+
+/*
  * 
- * Autor metoda:
- *      dohvatiKorisnika
- * Bosko Curcin
+ * ModelKorisnik - klasa koja opslužuje zahteve za upis i čitanje iz baze,
+ * iz entiteta Korisnik
+ * 
+ * @version 2.0
  */
 
 class ModelKorisnik extends CI_Model {
+    
+     /*
+     * @var object $korisnik Korisnik
+     */
     public $korisnik;
     
+    /*
+     * Konstruktor nove instance klase ModelKorisnik
+     * 
+     * @return void
+     */
     public function __construct() {
         parent::__construct();
         $this->korisnik = NULL;
@@ -45,12 +51,29 @@ class ModelKorisnik extends CI_Model {
         }
     }
     
+    /*
+     * Funkcija koja dohvata korisnika na osnovu prosleđenog id-a
+     * 
+     * @param integer $id IDK
+     * 
+     * @return []
+     */
     public function dohvatiKorisnikaById($id){
         $result = $this->db->where('IDK',$id)->get('korisnik');
         $kor = $result->row();
         return $kor;
     }
     
+    /*
+     * Funkcija koja za korisnika sa datim emailom proverava da li je 
+     * prosledjena lozinka ispravna (podudarna onoj u bazi), uz proveru da li postoji uopste
+     * korisnik sa datim email-om
+     * 
+     * @param string $lozinka Lozinka
+     * @param string $email Mail
+     * 
+     * @return boolean
+     */
     public function ispravnaLozinka($lozinka, $email){
         $result = $this->db->where('Mail', $email)->get('korisnik');
         $kor = $result->row(); //Ovime izbegnuto logovanje starim siframa
@@ -66,6 +89,14 @@ class ModelKorisnik extends CI_Model {
         }
     }
     
+    /*
+     * Funkcija koja proverava da li prosledjeni jmbg postoji kod nekog
+     * korisnika u bazi
+     * 
+     * @param string $jmbg JMBG
+     * 
+     * @return boolean
+     */
     public function postojeciJMBG($jmbg) {
         $result = $this->db->where('JMBG', $jmbg)->get('korisnik');
         $kor = $result->row();
@@ -76,20 +107,47 @@ class ModelKorisnik extends CI_Model {
         }
     }
 
+    /*
+     * Funkcija koja dodaje korisnika u bazu podataka
+     * 
+     * @param object $korisnik Korisnik
+     * 
+     * return void
+     */
     public function dodajKorisnika($korisnik) {
         $this->db->insert('Korisnik', $korisnik);
     }
     
+    /*
+     * Funkcija koja menja lozinku novom prosledjenom
+     * 
+     * @param string $nova_lozinka Lozinka
+     * 
+     * @return void
+     */
     public function izmeniLozinku($nova_lozinka) {
         $korisnik = $this->session->userdata('korisnik');
         $email = $korisnik->Mail;
         $this->db->query("UPDATE Korisnik SET Lozinka='$nova_lozinka' WHERE Mail='$email'");
     }
     
+    /*
+     * Funkcija koja vraca prethodno dohvacenog korisnika u polje ove klase
+     * 
+     * @return Korisnik
+     * 
+     */
     public function dohvacenKorisnik() {
         return $this->korisnik;
     }
     
+    /*
+     * Funkcija koja vraca  id vlasnika za odgovarajceg stanara
+     * 
+     * @param integer $stanarID IDK
+     * 
+     * @return IDK
+     */
     public function dohvatiVlasnika($stanarID){
         $this->db->from('zakup');
         $this->db->where("IDStanara",$stanarID);
