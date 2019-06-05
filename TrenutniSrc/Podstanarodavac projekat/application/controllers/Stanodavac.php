@@ -84,8 +84,9 @@ class Stanodavac extends CI_Controller {
         }
         
         
-	//fja koja treba da se izvrsi pri samom otvaranju stranice unesiteRacun zato
-	//sto je njen zadatak da automatski stavi u padajuci meni vlasnikove podstanare
+	/*Funkcija koja treba da se izvrsi pri samom otvaranju stranice unesiteRacun zato
+	*sto je njen zadatak da automatski stavi u padajuci meni vlasnikove podstanare.
+	*/
 	public function otvoriUnesiRacun(){
        
         $stan=$this->session->userdata('korisnik');
@@ -103,7 +104,9 @@ class Stanodavac extends CI_Controller {
         $this->load->view("unesiteRacun.php", $data);
        
         }
-//fja u kojoj cuvamo podatke koje treba da se dostave podstanaru o zadatom racunu    
+	/*Funkcija u kojoj podatke koje unosi stanodavac cuvamo u jedan niz kao parametre i prosledjujemo ih fji iz
+	*odgovarajuceg modela ciji je zadatak da ih sacuva u bazu
+	*/
     public function unesiRacun(){
         $stan=$this->session->userdata('korisnik');
         $stanodavac = $stan->IDK;
